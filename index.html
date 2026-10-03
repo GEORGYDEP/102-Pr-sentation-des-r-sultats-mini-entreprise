@@ -348,8 +348,8 @@ const AUVENTS = [["raye","Rayé"],["uni","Uni"],["sans","Sans auvent"]];
 const AMBIANCES = [["chaleureuse","Chaleureuse","#FFD89A","#F4A259"],["lumineuse","Lumineuse","#F4F7FF","#BFD7FF"],["nature","Nature","#D6F2D2","#86CF95"],["prestige","Prestige","#3A2D45","#C9A34E"]];
 const ACCUEILS = ["Bienvenue chez nous !","Entrez, c'est ouvert !","Au plaisir de vous conseiller","Ici, chaque client compte"];
 
-const APPORT = 25000;
-const FRAIS = { seul:150, plusieurs:1500 };
+const APPORT = 10000;
+const FRAIS = { seul:150, plusieurs:3000 };   // seul = entreprise individuelle ; plusieurs = société (SRL), avec 1 à 5 personnes
 const euro = (n) => n.toLocaleString("fr-BE") + " €";
 
 // ======================================================================
@@ -430,7 +430,7 @@ function normaliser(d){
   };
 }
 const forme = (E) => E.direction === "plusieurs" ? "Société (SRL)" : E.direction === "seul" ? "Entreprise individuelle" : "";
-const fonctionE = (E) => E.direction === "plusieurs" ? "Gérant(e) et associé(e)" : "Fondateur / fondatrice";
+const fonctionE = (E) => E.direction === "plusieurs" ? (E.nbAssocies > 1 ? "Gérant(e) et associé(e)" : "Gérant(e)") : "Indépendant(e)";
 const strat = (E) => STRATEGIES.find(s => s.id === E.strategie);
 const adr = (E) => (E.rue && E.numero ? `${E.rue} ${E.numero}` : "") + (E.commune ? `, ${E.cp} ${E.commune}` : "");
 
@@ -581,7 +581,7 @@ V.eleve = () => {
           <span class="tag">${t.emoji} ${esc(t.nom)}</span>
           <span class="tag" style="border-color:${sec.c1};color:${sec.c1}">Secteur ${esc(sec.titre.toLowerCase())}</span>
           <span class="tag" style="border-color:${fam.c1};color:${fam.c1}">${esc(fam.titre.replace("Elles ", "").toLowerCase())}</span>
-          ${E.direction ? `<span class="tag">${E.direction === "plusieurs" ? "🤝" : "🙋"} ${esc(forme(E))}</span>` : ""}
+          ${E.direction ? `<span class="tag">${E.direction === "plusieurs" ? "🏢" : "🙋"} ${esc(forme(E))}${E.direction === "plusieurs" ? (E.nbAssocies > 1 ? " · " + E.nbAssocies + " associés" : " · seul(e)") : ""}</span>` : ""}
           ${s ? `<span class="tag">${s.icone} ${esc(s.nom)}</span>` : ""}
         </div>
         <div class="idcard" style="--b:${E.couleur || "#8E4EC6"}"><h5>Carte d'identité de l'entreprise</h5><dl>
@@ -674,7 +674,7 @@ V.formes = () => {
       <div class="chips">${pros.map(p => `<span class="chip" style="border-color:rgba(52,211,153,.5)">✓ ${p}</span>`).join("")}${cons.map(p => `<span class="chip" style="border-color:rgba(255,61,139,.5)">✗ ${p}</span>`).join("")}</div>
       <p class="def">Frais de création dans le jeu : <b style="color:#fff">${frais}</b></p>
       <div class="tiles">${arr.map(tile).join("") || `<div class="empty">Aucune entreprise de la classe.</div>`}</div></div>`;
-  return head("Fiche 1 · Partie 5", "Individuelle ou <span class='grad'>société</span> ?", "Qui dirige l'entreprise ? Une seule personne, ou plusieurs associés ?")
+  return head("Fiche 1 · Partie 5", "Individuelle ou <span class='grad'>société</span> ?", "L'entreprise, c'est la personne elle-même (entreprise individuelle), ou une société qui a sa propre existence, créée seul(e) ou avec des associés ?")
     + `<div class="grid2 fade-in" style="grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);margin-bottom:18px">
         <div class="panel glass"><h3>La répartition dans la classe</h3><div class="donut-wrap">${donut([{v:ind.length,c:"#38bdf8"},{v:soc.length,c:"#e935c5"},{v:nd.length,c:"rgba(255,255,255,.25)"}], 190, "entreprises")}
           <div class="legend"><div><i style="background:#38bdf8"></i>Entreprises individuelles : <b>${ind.length}</b></div><div><i style="background:#e935c5"></i>Sociétés (SRL) : <b>${soc.length}</b></div>${nd.length ? `<div><i style="background:rgba(255,255,255,.25)"></i>Pas encore décidé : <b>${nd.length}</b></div>` : ""}</div></div></div>
@@ -682,9 +682,9 @@ V.formes = () => {
           <div class="chips" style="margin-top:12px">${soc.slice(0,4).map(E => `<span class="chip">${esc(E.denomination)}</span>`).join("")}${ind.slice(0,3).map(E => `<span class="chip">${esc(E.denomination)}</span>`).join("")}</div></div>
       </div>
       <div class="cols fade-in" style="grid-template-columns:repeat(2,minmax(0,1fr))">
-        ${box("#38bdf8","#6366f1","🙋","Entreprise individuelle", ind, ["Simple et peu coûteuse","On garde tous les bénéfices"], ["On paie les dettes avec ses biens personnels"], "environ 150 €")}
-        ${box("#e935c5","#9d4edd","🤝","Société (SRL)", soc, ["Travail et idées partagés","Biens personnels protégés"], ["Plus chère (notaire, comptable)","Bénéfices partagés"], "environ 1 500 €")}
-      </div>` + ask("Pourquoi certains ont-ils choisi la société malgré des frais dix fois plus élevés ? Qui a le plus d'argent en banque au départ ?");
+        ${box("#38bdf8","#6366f1","🙋","Entreprise individuelle", ind, ["Simple et peu coûteuse","On garde tous les bénéfices"], ["On paie les dettes avec ses biens personnels"], "environ " + FRAIS.seul.toLocaleString("fr-BE") + " €")}
+        ${box("#e935c5","#9d4edd","🏢","Société (SRL)", soc, ["Biens personnels protégés","Seul(e) ou avec des associés"], ["Plus chère (notaire, comptable)","Avec des associés, bénéfices partagés"], "environ " + FRAIS.plusieurs.toLocaleString("fr-BE") + " €")}
+      </div>` + ask("Pourquoi certains ont-ils choisi la société malgré des frais de création beaucoup plus élevés ? Qui a le plus d'argent en banque au départ ? Peut-on créer une société tout seul ?");
 };
 
 // ======================================================================
@@ -755,7 +755,7 @@ function demo(){
     const etapes = fin ? 9 : 4 + (i % 4), frais = FRAIS[dir];
     const ent = { typeId:t.id, activite:t.nom, secteur:t.secteur, nom, denomination: nom + (dir === "plusieurs" ? " SRL" : ""), slogan:t.slogans[i % 3],
       strategie:{ id:s.id, nom:s.nom, raisons:[pick(RAISONS)] }, direction: etapes >= 7 ? dir : "", forme: etapes >= 7 ? (dir === "plusieurs" ? "Société (SRL)" : "Entreprise individuelle") : "",
-      nbAssocies: dir === "plusieurs" ? 2 + (i % 3) : 1,
+      nbAssocies: dir === "plusieurs" ? 1 + (i % 4) : 1,
       identiteVisuelle:{ couleurPrincipale:pick(couleurs), couleurAccompagnement:pick(COULEURS2)[1], styleEcriture:pick(STYLES)[0], symbole:pick(t.symboles) },
       boutique: etapes >= 5 ? { facade:pick(FACADES)[0], auvent:pick(AUVENTS)[0], ambiance:pick(AMBIANCES)[0], phraseAccueil:pick(ACCUEILS) } : {},
       adresse: etapes >= 6 ? { rue:pick(rues), numero:String(1 + Math.floor(rnd()*150)), cp:c[1], commune:c[0] } : {},
