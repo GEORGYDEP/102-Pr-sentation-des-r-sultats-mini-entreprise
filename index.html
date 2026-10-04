@@ -60,6 +60,7 @@ main{min-width:0; padding:26px 34px 60px}
 .btn{border:0; border-radius:14px; padding:11px 20px; font-weight:600; font-size:15px; cursor:pointer; color:#fff; transition:transform .2s, box-shadow .2s}
 .btn-main{background:var(--grad); box-shadow:0 10px 26px rgba(233,53,197,.35)}
 .btn-main:hover{transform:translateY(-2px)}
+.btn:disabled{opacity:.35; cursor:not-allowed; transform:none; box-shadow:none}
 .btn-ghost{background:var(--glass); border:1px solid var(--border)}
 .btn-ghost:hover{background:var(--glass-2)}
 .btn-ghost.on{border-color:var(--cyan); color:var(--cyan)}
@@ -235,6 +236,112 @@ body.projo{font-size:19px}
 body.projo .rail{display:none}
 body.projo .app{grid-template-columns:minmax(0,1fr)}
 body.projo main{padding:22px 40px}
+
+/* ═══ Module « Les étapes d'un achat » ═══ */
+.stepbar{display:grid; grid-template-columns:repeat(8,minmax(0,1fr)); gap:8px; margin-bottom:18px}
+.sb{display:flex; flex-direction:column; align-items:center; gap:4px; padding:10px 6px; border-radius:16px; background:var(--glass); border:1px solid var(--border); color:var(--soft); cursor:pointer; font-size:12.5px; text-align:center; line-height:1.2}
+.sb .n{width:34px; height:34px; border-radius:50%; display:grid; place-items:center; font-size:17px; background:rgba(255,255,255,.08)}
+.sb.on{background:linear-gradient(120deg,rgba(255,61,139,.22),rgba(157,78,221,.22)); border-color:rgba(233,53,197,.45); color:#fff}
+.sb.on .n{background:var(--grad)}
+.sb.vu .n{background:rgba(52,211,153,.25)}
+.sb.lock{opacity:.6}
+.slide{display:grid; grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr); gap:22px; align-items:start}
+.sx{padding:24px 26px}
+.sx .num{font-family:var(--mono); color:var(--yellow); font-size:14px}
+.sx h3{font-family:var(--serif); font-weight:600; font-size:clamp(26px,2.4vw,36px); line-height:1.1; color:#fff; margin:6px 0 14px}
+.sx .who{display:flex; flex-wrap:wrap; gap:8px; margin-bottom:14px}
+.sx .who span{font-size:14px; font-weight:600; padding:6px 12px; border-radius:999px; background:rgba(255,255,255,.08); border:1px solid var(--border)}
+.sx p{color:var(--soft); font-size:17px; margin-bottom:10px}
+.sx .retenir{margin-top:14px; padding:14px 16px; border-radius:14px; border:1px solid rgba(52,211,153,.45); background:rgba(52,211,153,.08); color:#d9fbe9; font-size:16px}
+.sx .retenir b{color:#9ff0c9}
+.sdoc{min-width:0}
+.slide.large{grid-template-columns:1fr}
+.slide.large .sx{display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:6px 28px; align-items:start}
+.slide.large .sx .num,.slide.large .sx h3,.slide.large .sx .who{grid-column:1/-1}
+.ex-bar{display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin-bottom:16px}
+.ex-bar select{background:rgba(10,6,24,.6); color:#fff; border:1px solid var(--border); border-radius:12px; padding:9px 12px; font-size:14px}
+.ex-bar option{background:var(--bg-1)}
+.paper{background:#fff; color:#1D1F33; border-radius:8px; padding:26px 30px; box-shadow:0 22px 60px rgba(0,0,0,.5); font-size:15px; line-height:1.45}
+.paper p{margin-bottom:8px}
+.paper .dh{display:flex; justify-content:space-between; gap:18px; align-items:flex-start}
+.paper .from{display:flex; gap:12px; align-items:flex-start}
+.paper .from .emb{width:48px; height:48px; border-radius:12px; display:grid; place-items:center; font-size:24px; flex:none}
+.paper .from .co{font-size:20px; line-height:1.15}
+.paper .from p{margin:3px 0 0; font-size:13px; color:#4A4E68}
+.paper .from .ids{font-family:var(--mono); font-size:11.5px}
+.paper .to{border:1px solid #D5D8E6; border-radius:8px; padding:10px 14px; min-width:200px; font-size:14px}
+.paper .to .lbl{font-size:11px; color:#6B6F88}
+.paper .place{text-align:right; margin:18px 0 6px; font-size:14px}
+.paper h3.doc{font-size:21px; letter-spacing:.5px; margin:2px 0}
+.paper .ref{font-family:var(--mono); font-size:12.5px; color:#4A4E68; margin-bottom:12px}
+.paper table{width:100%; border-collapse:collapse; margin:10px 0}
+.paper th{background:#F0F2FA; text-align:left; font-size:12.5px; padding:7px 8px; border-bottom:2px solid #1D1F33}
+.paper td{padding:7px 8px; border-bottom:1px solid #E3E5EF; font-size:14px}
+.paper .sig{margin-top:14px; display:flex; justify-content:flex-end}
+.paper .sig div{text-align:center; min-width:220px}
+.paper .signed{font-family:'Playfair Display',Georgia,serif; font-style:italic; font-size:22px; color:#2A2F7A}
+.paper .sig small{display:block; color:#6B6F88; font-size:12px}
+.paper .foot{margin-top:16px; border-top:1px solid #E3E5EF; padding-top:6px; font-size:11px; color:#8A8FA8; text-align:center}
+.offres3{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px}
+.offre{background:#fff; color:#1D1F33; border-radius:12px; padding:14px; box-shadow:0 14px 34px rgba(0,0,0,.4); display:flex; flex-direction:column; gap:6px; position:relative; border:3px solid transparent; font-size:13px}
+.offre.on{border-color:#E935C5; box-shadow:0 0 0 4px rgba(233,53,197,.35), 0 14px 34px rgba(0,0,0,.4)}
+.offre.on::after{content:"✓ Offre choisie"; position:absolute; top:-12px; right:10px; background:var(--grad); color:#fff; font-weight:700; font-size:12px; padding:3px 10px; border-radius:999px}
+.offre .oh{border-bottom:2px solid #E3E5EF; padding-bottom:6px}
+.offre .oh b{font-size:15px}
+.offre .oh small{display:block; color:#6B6F88; font-size:11px; line-height:1.3}
+.offre .atout{align-self:flex-start; font-size:11px; font-weight:700; padding:2px 9px; border-radius:999px; background:#F1E9FF; color:#6B2FB3}
+.offre .art{font-weight:700; font-size:14px}
+.offre .ln{display:flex; justify-content:space-between; gap:6px}
+.offre .ln span:last-child{font-family:var(--mono); font-weight:700; white-space:nowrap}
+.offre .tot{display:flex; justify-content:space-between; background:#F4F2FB; border-radius:8px; padding:6px 8px; font-weight:800}
+.offre .tot span:last-child{font-family:var(--mono); white-space:nowrap}
+.offre .cond{font-size:12px; color:#4A4E68; display:grid; gap:1px}
+.mail{background:#fff; color:#1D1F33; border-radius:12px; overflow:hidden; box-shadow:0 22px 60px rgba(0,0,0,.5); font-size:15px}
+.mail .mh{background:#F0F2FA; padding:12px 18px; font-size:13.5px; display:grid; gap:3px; border-bottom:1px solid #E3E5EF}
+.mail .mh b{display:inline-block; width:58px; color:#6B6F88; font-weight:600}
+.mail .mb{padding:16px 20px; line-height:1.55}
+.mail .mb p{margin-bottom:8px}
+.methods{display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:14px}
+.method{padding:12px 14px; border-radius:14px; background:rgba(255,255,255,.06); border:1px solid var(--border); font-size:14px}
+.method.on{border-color:rgba(233,53,197,.6); background:rgba(233,53,197,.12)}
+.method b{display:block; color:#fff; font-size:15px; margin-bottom:3px}
+.method .p{color:#9ff0c9} .method .c{color:#ffc4d4}
+.needs{display:grid; gap:12px}
+.needc{display:flex; gap:14px; align-items:center; padding:16px 18px; border-radius:16px; background:rgba(255,255,255,.06); border:1px solid var(--border)}
+.needc .i{font-size:40px}
+.needc b{display:block; font-family:var(--serif); font-size:20px; color:#fff}
+.needc p{color:var(--soft); font-size:14px; margin:0}
+.budget{margin-top:12px; padding:14px 18px; border-radius:14px; background:rgba(52,211,153,.1); border:1px solid rgba(52,211,153,.45); font-size:16px}
+.budget b{font-family:var(--mono); color:#9ff0c9}
+.cmp{width:100%; border-collapse:collapse; margin-top:14px; font-size:14px}
+.cmp th,.cmp td{padding:7px 9px; border-bottom:1px solid var(--border-soft); text-align:left}
+.cmp th{color:var(--dim); font-size:11.5px; letter-spacing:.06em; text-transform:uppercase}
+.cmp td.best{color:#6ee7b7; font-weight:700}
+.checks{display:grid; gap:8px; margin-top:14px}
+.checks div{padding:10px 14px; border-radius:12px; background:rgba(52,211,153,.1); border:1px solid rgba(52,211,153,.4); font-size:15px}
+.receipt{max-width:300px; margin:0 auto; background:#fff; color:#1D1F33; font-family:var(--mono); font-size:13px; padding:16px 18px; box-shadow:0 18px 40px rgba(0,0,0,.45); border-radius:6px}
+.receipt .c{text-align:center}
+.receipt hr{border:0; border-top:1px dashed #999; margin:8px 0}
+.receipt .r{display:flex; justify-content:space-between; gap:10px}
+.notif2{max-width:340px; margin:14px auto 0; background:rgba(255,255,255,.95); color:#1D1F33; border-radius:16px; padding:12px 14px; font-size:14px}
+.notif2 .nh{display:flex; justify-content:space-between; font-size:12px; color:#6B6F88}
+.lockdoc{position:relative; border-radius:10px; overflow:hidden}
+.lockdoc .paper{filter:blur(3px); opacity:.65}
+.lockdoc .lk{position:absolute; inset:0; display:grid; place-items:center; text-align:center; background:rgba(10,6,24,.35)}
+.lockdoc .lk div{background:rgba(10,6,24,.85); border:1px solid rgba(251,191,36,.6); border-radius:18px; padding:18px 24px; color:#fff; font-size:17px}
+.lockdoc .lk b{display:block; font-family:var(--serif); font-size:24px; color:var(--yellow)}
+.circuit{display:grid; grid-template-columns:200px minmax(0,1fr) 200px; gap:14px; align-items:stretch}
+.circuit .side{display:grid; place-items:center; text-align:center; padding:18px; border-radius:22px}
+.circuit .side .i{font-size:56px}
+.circuit .side b{display:block; font-family:var(--serif); font-size:22px; color:#fff}
+.circuit .flows{display:grid; gap:10px}
+.flow{display:grid; grid-template-columns:34px minmax(0,1fr) 34px; align-items:center; gap:8px; padding:10px 12px; border-radius:14px; background:rgba(255,255,255,.06); border:1px solid var(--border); font-size:15px}
+.flow .ar{font-size:24px; color:var(--yellow); text-align:center}
+.flow .t b{color:#fff} .flow .t small{display:block; color:var(--dim); font-size:12.5px}
+.flow.soon{opacity:.55; border-style:dashed}
+.snav{display:flex; justify-content:space-between; align-items:center; gap:12px; margin-top:20px}
+@media (max-width:1200px){ .slide{grid-template-columns:1fr} .stepbar{grid-template-columns:repeat(4,minmax(0,1fr))} .offres3{grid-template-columns:1fr} .circuit{grid-template-columns:1fr} }
+
 @media (max-width:1200px){ .kpis{grid-template-columns:repeat(3,minmax(0,1fr))} .grid2,.pres{grid-template-columns:1fr} .cards3{grid-template-columns:1fr 1fr} }
 @media (max-width:900px){ .app{grid-template-columns:1fr} .rail{position:static; height:auto; flex-direction:row; flex-wrap:wrap} .rail .foot,.navlab{display:none} .cols{grid-template-columns:1fr !important} .chain{grid-template-columns:1fr} .chain .arr{transform:rotate(90deg)} .defs{grid-template-columns:1fr} .cards3{grid-template-columns:1fr} }
 @media (prefers-reduced-motion:reduce){ *,*::before,*::after{animation:none !important; transition:none !important} }
@@ -353,6 +460,52 @@ const FRAIS = { seul:150, plusieurs:3000 };   // seul = entreprise individuelle 
 const euro = (n) => n.toLocaleString("fr-BE") + " €";
 
 // ======================================================================
+//  LES BIENS À ACHETER ET LEURS FOURNISSEURS (identiques pour toute la classe)
+// ======================================================================
+const BIENS = [
+  { id:"mobilier", nom:"Le mobilier", court:"mobilier", icone:"🪑", pourquoi:"Pour accueillir tes clients et travailler confortablement : une table, des chaises et un comptoir.",
+    fournisseurs:[
+      { code:"MBP", nom:"MeubloPrix", forme:"SRL", rue:"Route de Mons 154", cp:"7301", ville:"Hornu", tel:"065 71 22 40", web:"www.meubloprix.be", atout:"Prix bas",
+        article:"Ensemble mobilier en mélaminé blanc", detail:"1 table de travail, 4 chaises empilables, 1 comptoir d'accueil", ref:"ENS-MEL-01", qualite:"Simple et pratique", prix:690, remise:0, livraison:35, delai:10, garantie:1 },
+      { code:"BCO", nom:"Bureau & Co", forme:"SA", rue:"Avenue Wilson 410", cp:"7012", ville:"Jemappes", tel:"065 82 15 90", web:"www.bureauetco.be", atout:"Bon rapport qualité-prix",
+        article:"Ensemble mobilier en bois clair", detail:"1 table en hêtre, 4 chaises rembourrées, 1 comptoir avec rangements", ref:"ENS-BOIS-24", qualite:"Solide et chaleureux", prix:1180, remise:5, livraison:0, delai:5, garantie:2 },
+      { code:"DSG", nom:"Design Intérieur", forme:"SRL", rue:"Boulevard d'Avroy 77", cp:"4000", ville:"Liège", tel:"04 221 33 08", web:"www.design-interieur.be", atout:"Qualité premium",
+        article:"Ensemble mobilier design en chêne massif", detail:"1 table design, 4 chaises en cuir, 1 comptoir éclairé, montage compris", ref:"DSG-CHENE-PRO", qualite:"Haut de gamme, fait pour durer", prix:1890, remise:0, livraison:0, delai:3, garantie:3 } ] },
+  { id:"caisse", nom:"La caisse enregistreuse", court:"caisse enregistreuse", icone:"🧾", pourquoi:"Pour encaisser tes clients, imprimer les tickets de caisse et garder une trace de chaque vente.",
+    fournisseurs:[
+      { code:"CPL", nom:"CaissePlus", forme:"SRL", rue:"Rue de la Station 12", cp:"7080", ville:"Frameries", tel:"065 67 40 11", web:"www.caisseplus.be", atout:"Prix bas",
+        article:"Caisse enregistreuse simple", detail:"Clavier, tiroir-caisse et imprimante de tickets", ref:"CR-100", qualite:"Simple et efficace", prix:290, remise:0, livraison:25, delai:8, garantie:1 },
+      { code:"ENC", nom:"Encaiss'Tech", forme:"SA", rue:"Chaussée de Bruxelles 200", cp:"7000", ville:"Mons", tel:"065 31 77 52", web:"www.encaisstech.be", atout:"Bon rapport qualité-prix",
+        article:"Caisse tactile avec lecteur de codes-barres", detail:"Écran tactile, tiroir-caisse, imprimante et lecteur de codes-barres", ref:"CT-SCAN-2", qualite:"Moderne et rapide", prix:690, remise:5, livraison:0, delai:5, garantie:2 },
+      { code:"BLG", nom:"Belgo Caisse Premium", forme:"SRL", rue:"Avenue Louise 320", cp:"1050", ville:"Bruxelles", tel:"02 640 18 25", web:"www.belgocaisse.be", atout:"Qualité premium",
+        article:"Caisse tactile tout-en-un avec terminal de paiement", detail:"Grand écran tactile, terminal pour cartes bancaires, logiciel de gestion du stock, installation comprise", ref:"PRO-ALL-IN", qualite:"Complète et professionnelle", prix:1290, remise:0, livraison:0, delai:3, garantie:3 } ] },
+  { id:"ordinateur", nom:"L'ordinateur", court:"ordinateur", icone:"💻", pourquoi:"Pour écrire tes documents (bons de commande, factures), envoyer des e-mails et suivre ton argent.",
+    fournisseurs:[
+      { code:"PCD", nom:"PC Discount", forme:"SA", rue:"Rue du Grand Quiévroy 8", cp:"7000", ville:"Mons", tel:"065 33 90 14", web:"www.pcdiscount.be", atout:"Prix bas",
+        article:"Ordinateur portable 15 pouces", detail:"Pour le traitement de texte, les e-mails et internet", ref:"NB-15-ESS", qualite:"Basique mais suffisant", prix:499, remise:0, livraison:20, delai:7, garantie:1 },
+      { code:"INF", nom:"InfoMons", forme:"SRL", rue:"Rue de Nimy 54", cp:"7000", ville:"Mons", tel:"065 35 26 61", web:"www.infomons.be", atout:"Bon rapport qualité-prix",
+        article:"Ordinateur portable performant + logiciel de gestion", detail:"Rapide et léger, avec un logiciel pour faire tes factures", ref:"NB-PRO-GEST", qualite:"Rapide et complet", prix:899, remise:5, livraison:0, delai:4, garantie:2 },
+      { code:"DGX", nom:"Digital Expert", forme:"SRL", rue:"Grand-Place 3", cp:"7500", ville:"Tournai", tel:"069 22 48 70", web:"www.digitalexpert.be", atout:"Qualité premium",
+        article:"Ordinateur tout-en-un 27 pouces + imprimante", detail:"Grand écran, imprimante couleur, installation et formation d'une heure comprises", ref:"AIO-27-PRINT", qualite:"Très haut de gamme", prix:1490, remise:0, livraison:0, delai:3, garantie:3 } ] }
+];
+const METHODES = [
+  { id:"magasin", icone:"🚶", nom:"Aller dans les magasins", texte:"Tu vas voir les produits sur place, tu peux les toucher et poser tes questions au vendeur.",
+    pro:"Tu vois et tu touches le produit", con:"Ça prend du temps et il faut se déplacer dans 3 magasins", duree:"environ 1 journée",
+    anim:["🚶","🚗","🏬"], recit:"Tu as visité 3 magasins. Chaque vendeur t'a remis une offre de prix écrite." },
+  { id:"telephone", icone:"📞", nom:"Téléphoner aux fournisseurs", texte:"Tu appelles 3 fournisseurs pour leur demander leurs prix et leurs conditions.",
+    pro:"C'est rapide et tu peux poser tes questions", con:"Au téléphone, rien n'est écrit : il faut demander une confirmation", duree:"environ 1 heure",
+    anim:["📞","☎️","📱"], recit:"Tu as appelé 3 fournisseurs. Pour être sûr(e), ils t'ont envoyé leur offre de prix par e-mail." },
+  { id:"email", icone:"✉️", nom:"Envoyer des e-mails", texte:"Tu écris à 3 fournisseurs pour leur demander une offre de prix.",
+    pro:"Tout est écrit : c'est une preuve", con:"Il faut attendre leur réponse (1 ou 2 jours)", duree:"1 à 2 jours d'attente",
+    anim:["✉️","📨","📬"], recit:"Tu as envoyé une demande de prix à 3 fournisseurs. Ils t'ont répondu avec leur offre de prix." },
+  { id:"internet", icone:"🌐", nom:"Comparer sur internet", texte:"Tu compares les prix sur le site d'un fournisseur et sur au moins 2 autres sites.",
+    pro:"C'est rapide et tu vois beaucoup de produits", con:"Tu ne vois pas le produit en vrai, attention aux frais de livraison", duree:"environ 30 minutes",
+    anim:["💻","🔎","🛒"], recit:"Tu as comparé 3 sites internet. Tu as enregistré l'offre de prix de chacun." }
+];
+const RAISONS_OFFRE = ["Le prix le plus bas","La meilleure qualité","La livraison la plus rapide","La garantie la plus longue","La livraison gratuite","Ça colle à ma stratégie"];
+const ETAPES_ACHAT = [["bien","Choisir le bien"],["methode","Chercher"],["offres","Comparer"],["commande","Commander"],["notif","Commande prête"],["livraison","Livraison"],["paiement","Paiement"],["patrimoine","Patrimoine"]];
+
+// ======================================================================
 //  CONFIGURATION
 // ======================================================================
 const CONFIG = {
@@ -428,7 +581,8 @@ function normaliser(d){
     bce: ent.numeroEntreprise || (et.ids || {}).bce || "", iban: ent.iban || (et.ids || {}).iban || "",
     email2: ent.email || "", dateCreation: ent.dateCreation || et.dateCreation || "",
     enBanque: ent.argent ? ent.argent.argentEnBanque : null, frais: ent.argent ? ent.argent.fraisDeCreation : null,
-    concurrent: ((m.bonus || {}).concurrent) || ((et.bonus || {}).concurrent) || ""
+    concurrent: ((m.bonus || {}).concurrent) || ((et.bonus || {}).concurrent) || "",
+    m2: (d.missions || {})["2"] || null
   };
 }
 const forme = (E) => E.direction === "plusieurs" ? "Société (SRL)" : E.direction === "seul" ? "Entreprise individuelle" : "";
@@ -508,10 +662,12 @@ const head = (kick, titre, lead) => `<div class="sec-head"><div class="kick"><sp
 // ======================================================================
 //  ÉTAT DE LA CONSOLE
 // ======================================================================
-const APP = { vue:"ensemble", source:null, cle:"", liste:[], config:null, maj:null, idx:0, cacherNums:false, auto:true, busy:false, err:"" };
+const APP = { etape:0, exemple:"fictif", exAchat:0, vue:"ensemble", source:null, cle:"", liste:[], config:null, maj:null, idx:0, cacherNums:false, auto:true, busy:false, err:"" };
 try { APP.cle = localStorage.getItem(CONFIG.CLE_STOCKAGE) || ""; } catch(e) {}
 const VUES = [
   ["ensemble","🏠","Vue d'ensemble"], ["eleve","👤","Élève par élève"],
+  ["sep","Mission 2"],
+  ["etapes","🧭","Les étapes d'un achat"],
   ["sep","Le cours : fiche 1"],
   ["identites","📇","Cartes d'identité"], ["biens","🧺","Biens ou services"], ["familles","🏭","Que font-elles ?"],
   ["secteurs","🌍","Secteurs d'activité"], ["formes","⚖️","Individuelle ou société"]
@@ -725,6 +881,180 @@ function render(){
 }
 
 // ======================================================================
+//  MODULE « LES ÉTAPES D'UN ACHAT » (mission 2) – présentation en classe
+// ======================================================================
+const eurC = (n) => (Math.round(n * 100) / 100).toLocaleString("fr-BE", {minimumFractionDigits: n % 1 ? 2 : 0, maximumFractionDigits:2}) + " €";
+const bceDe = (base8) => { const b = String(base8).padStart(8,"0"), n = b + String(97 - (parseInt(b,10) % 97)).padStart(2,"0"); return `${n.slice(0,4)}.${n.slice(4,7)}.${n.slice(7)}`; };
+
+/** Entreprise et achat fictifs, identiques à ce que les élèves ont vécu. */
+const E_FICTIF = { prenom:"Alex", nomEleve:"Martin", classe:"3P Vente", typeId:"velos", nom:"Roue Libre", denomination:"Roue Libre", slogan:"La liberté sur deux roues",
+  couleur:"#12A594", couleur2:"#FFFFFF", style:"fun", symbole:"🚲", rue:"Rue de la Gare", numero:"18", cp:"7080", commune:"Frameries", direction:"seul", nbAssocies:1,
+  bce:bceDe(10234567), iban:"BE71 0631 2345 6769", email2:"contact@rouelibre.be", enBanque:9850, frais:150 };
+function achatDepuisCatalogue(bienId, methodeId, choix, raisons, E){
+  const b = BIENS.find(x => x.id === bienId);
+  const offres = b.fournisseurs.map((f, k) => { const remise = Math.round(f.prix * f.remise) / 100;
+    return { numero:`OP-${f.code}-4821`, fNom:f.nom, fForme:f.forme, fAdresse:`${f.rue}, ${f.cp} ${f.ville}`, fRue:f.rue, fVille:`${f.cp} ${f.ville}`, fTva:"BE " + bceDe(40000000 + k * 1234567),
+      fTel:f.tel, fWeb:f.web, atout:f.atout, ref:f.ref, article:f.article, detail:f.detail, prix:f.prix, remisePct:f.remise, remise, livraison:f.livraison, total:f.prix - remise + f.livraison,
+      delai:f.delai, garantie:f.garantie, paiement:"à la livraison" }; });
+  const o = offres[choix];
+  return { bien:b, methode:METHODES.find(m => m.id === methodeId), offres, choix, raisons,
+    bc:{ numero:"BC-2026-001", date:"5 octobre 2026", signature:`${E.prenom} ${E.nomEleve}` },
+    livraisonPrevue:"vendredi 9 octobre", bl:{ numero:`BL-${b.fournisseurs[choix].code}-30418`, date:"9 octobre 2026", signature:`${E.prenom} ${E.nomEleve}`, colis:1 },
+    paiement:{ montant:o.total, date:"9 octobre 2026" }, budgetAvant:E.enBanque };
+}
+/** Un achat réel d'élève (données envoyées par la mission 2) remis dans le même format. */
+function achatDepuisEleve(E, k){
+  const x = (E.m2.achats || [])[k]; if (!x || !x.offreChoisie) return null;
+  const offres = (x.offresRecues || []).map(o => ({ numero:o.numero, fNom:o.fournisseur.nom, fForme:o.fournisseur.forme, fAdresse:o.fournisseur.adresse,
+    fRue:(o.fournisseur.adresse || "").split(",")[0], fVille:(o.fournisseur.adresse || "").split(",").slice(1).join(",").trim(), fTva:o.fournisseur.numeroTVA,
+    fTel:o.fournisseur.telephone, fWeb:o.fournisseur.site, atout:o.fournisseur.atout, ref:o.reference, article:o.article, detail:o.detail, prix:o.prix,
+    remisePct:o.remisePourcent, remise:o.remise, livraison:o.fraisLivraison, total:o.totalAPayer, delai:o.delaiJours, garantie:o.garantieAns, paiement:o.paiement }));
+  const choix = Math.max(0, offres.findIndex(o => o.numero === x.offreChoisie.numero));
+  const payes = (E.m2.achats || []).slice(0, k).filter(a => a.paiement).reduce((s, a) => s + a.paiement.montant, 0);
+  return { bien:BIENS.find(b => b.id === x.bien.id), methode:METHODES.find(m => m.id === (x.methode || {}).id) || METHODES[0], offres, choix, raisons:x.raisonsDuChoix || [],
+    bc:{ numero:(x.bonDeCommande || {}).numero || "–", date:(x.bonDeCommande || {}).date || "", signature:(x.bonDeCommande || {}).signature || "" },
+    livraisonPrevue:(x.notification || {}).livraisonPrevue || "", bl:{ numero:(x.bonDeLivraison || {}).numero || "–", date:(x.bonDeLivraison || {}).date || "", signature:(x.bonDeLivraison || {}).signature || "", colis:x.bien.id === "mobilier" ? 6 : 1 },
+    paiement:{ montant:(x.paiement || {}).montant || offres[choix].total, date:(x.paiement || {}).date || "" }, budgetAvant:(E.enBanque || 0) - payes };
+}
+const elevesM2 = () => APP.liste.filter(E => E.m2 && (E.m2.achats || []).some(a => a.paiement));
+function exemple(){
+  if (APP.exemple && APP.exemple !== "fictif"){
+    const E = APP.liste.find(x => x.email === APP.exemple);
+    if (E && E.m2){ const A = achatDepuisEleve(E, APP.exAchat || 0); if (A) return { E, A, fictif:false }; }
+  }
+  return { E:E_FICTIF, A:achatDepuisCatalogue("ordinateur", "email", 1, ["La garantie la plus longue", "La livraison gratuite"], E_FICTIF), fictif:true };
+}
+
+// ---------- Documents ----------
+const enteteAcheteur = (E) => `<div class="from"><div class="emb" style="background:${E.couleur || "#8E4EC6"};color:${onColor(E.couleur || "#8E4EC6")}">${E.symbole || "★"}</div><div>
+  <div class="co f-${E.style}">${esc(E.denomination || E.nom)}</div><p>${esc(E.rue)} ${esc(E.numero)}<br>${esc(E.cp)} ${esc(E.commune)}<br>${esc(E.email2)}</p>
+  <p class="ids">N° d'entreprise ${esc(E.bce)}<br>TVA BE ${esc(E.bce)}<br>IBAN ${esc(E.iban)}</p></div></div>`;
+const blocFourn = (o, lbl) => `<div class="to"><div class="lbl">${lbl}</div><b>${esc(o.fNom)} ${esc(o.fForme)}</b><br>${esc(o.fRue)}<br>${esc(o.fVille)}<br><span style="font-family:var(--mono);font-size:11.5px">TVA ${esc(o.fTva)}</span></div>`;
+function lignes(o){
+  return `<table><thead><tr><th>Référence</th><th>Désignation</th><th>Qté</th><th>Prix unitaire</th><th>Total</th></tr></thead><tbody>
+    <tr><td style="font-family:var(--mono)">${esc(o.ref)}</td><td>${esc(o.article)}</td><td>1</td><td>${eurC(o.prix)}</td><td>${eurC(o.prix)}</td></tr>
+    ${o.remise ? `<tr><td></td><td>Remise de ${o.remisePct} %</td><td></td><td></td><td>− ${eurC(o.remise)}</td></tr>` : ""}
+    <tr><td></td><td>Livraison</td><td></td><td></td><td>${o.livraison ? eurC(o.livraison) : "gratuite"}</td></tr>
+    <tr><td></td><td><b>Total à payer (TVA comprise)</b></td><td></td><td></td><td><b>${eurC(o.total)}</b></td></tr></tbody></table>`;
+}
+function docOffre(o, choisi){
+  return `<div class="offre ${choisi ? "on" : ""}"><div class="oh"><b>${esc(o.fNom)} ${esc(o.fForme)}</b><small>${esc(o.fAdresse)}<br>Tél. ${esc(o.fTel)} · ${esc(o.fWeb)}</small></div>
+    <span class="atout">${esc(o.atout)}</span><div class="art">${esc(o.article)}</div>
+    <div class="ln"><span>Prix</span><span>${eurC(o.prix)}</span></div>${o.remise ? `<div class="ln"><span>Remise ${o.remisePct} %</span><span>− ${eurC(o.remise)}</span></div>` : ""}
+    <div class="ln"><span>Livraison</span><span>${o.livraison ? eurC(o.livraison) : "gratuite"}</span></div>
+    <div class="tot"><span>Total</span><span>${eurC(o.total)}</span></div>
+    <div class="cond"><span><b>Délai :</b> ${o.delai} jours</span><span><b>Garantie :</b> ${o.garantie} an${o.garantie > 1 ? "s" : ""}</span><span><b>Paiement :</b> ${esc(o.paiement)}</span></div></div>`;
+}
+function tableauComparatif(A){
+  const v = (f) => A.offres.map(f), best = (arr, min) => arr.indexOf(min ? Math.min(...arr) : Math.max(...arr));
+  const bT = best(v(o => o.total), true), bD = best(v(o => o.delai), true), bG = best(v(o => o.garantie), false);
+  return `<table class="cmp"><thead><tr><th>Fournisseur</th><th>Total</th><th>Délai</th><th>Livraison</th><th>Garantie</th></tr></thead><tbody>
+    ${A.offres.map((o,k) => `<tr><td>${k === A.choix ? "👉 " : ""}${esc(o.fNom)}</td><td class="${k === bT ? "best" : ""}">${eurC(o.total)}</td><td class="${k === bD ? "best" : ""}">${o.delai} j</td><td>${o.livraison ? eurC(o.livraison) : "gratuite"}</td><td class="${k === bG ? "best" : ""}">${o.garantie} an${o.garantie > 1 ? "s" : ""}</td></tr>`).join("")}</tbody></table>`;
+}
+function docBC(E, A){ const o = A.offres[A.choix];
+  return `<div class="paper"><div class="dh">${enteteAcheteur(E)}${blocFourn(o, "Fournisseur")}</div>
+    <div class="place">${esc(E.commune)}, le ${esc(A.bc.date)}</div><h3 class="doc">BON DE COMMANDE</h3><div class="ref">N° ${esc(A.bc.numero)} · Votre offre n° ${esc(o.numero)}</div>
+    ${lignes(o)}<p><b>Conditions :</b> livraison sous ${o.delai} jours · livraison ${o.livraison ? "payante" : "gratuite"} · garantie ${o.garantie} an${o.garantie > 1 ? "s" : ""} · paiement ${esc(o.paiement)}.</p>
+    <div class="sig"><div><div class="signed">${esc(A.bc.signature)}</div><small>Bon pour commande</small></div></div><div class="foot">Document fictif – projet pédagogique, Institut Saint-Luc de Frameries</div></div>`;
+}
+function docBL(E, A){ const o = A.offres[A.choix];
+  return `<div class="paper"><div class="dh"><div class="from"><div class="emb" style="background:#1E2A5A;color:#fff">📦</div><div><div class="co">${esc(o.fNom)} ${esc(o.fForme)}</div><p>${esc(o.fRue)}<br>${esc(o.fVille)}<br>Tél. ${esc(o.fTel)}</p></div></div>
+      <div class="to"><div class="lbl">Destinataire</div><b>${esc(E.denomination || E.nom)}</b><br>${esc(E.rue)} ${esc(E.numero)}<br>${esc(E.cp)} ${esc(E.commune)}</div></div>
+    <div class="place">Le ${esc(A.bl.date)}</div><h3 class="doc">BON DE LIVRAISON</h3><div class="ref">N° ${esc(A.bl.numero)} · Votre commande n° ${esc(A.bc.numero)} · Colis : ${A.bl.colis}</div>
+    <table><thead><tr><th>Référence</th><th>Désignation</th><th>Quantité livrée</th></tr></thead><tbody><tr><td style="font-family:var(--mono)">${esc(o.ref)}</td><td>${esc(o.article)}</td><td>1</td></tr></tbody></table>
+    <p><b>Conditions :</b> paiement ${esc(o.paiement)} – à régler : <b>${eurC(o.total)}</b>.</p>
+    <div class="sig"><div><div class="signed">${esc(A.bl.signature)}</div><small>Réception</small></div></div><div class="foot">Document fictif – projet pédagogique, Institut Saint-Luc de Frameries</div></div>`;
+}
+function docRecu(A){ const o = A.offres[A.choix];
+  return `<div class="receipt"><div class="c"><b>${esc(o.fNom)} ${esc(o.fForme)}</b></div><hr>
+    <div class="r"><span>Date</span><span>${esc(A.paiement.date)}</span></div><div class="r"><span>Commande</span><span>${esc(A.bc.numero)}</span></div><div class="r"><span>Livraison</span><span>${esc(A.bl.numero)}</span></div><hr>
+    <div class="r"><b>MONTANT PAYÉ</b><b>${eurC(A.paiement.montant)}</b></div><div class="r"><span>Payé par</span><span>carte bancaire</span></div><hr><div class="c">✔ PAYÉ – Merci !</div></div>`;
+}
+function docDemande(E, A){
+  return `<div class="mail"><div class="mh"><div><b>De :</b> ${esc(E.email2)}</div><div><b>À :</b> ${A.offres.map(o => esc(o.fNom)).join(", ")}</div><div><b>Objet :</b> Demande de prix – ${esc(A.bien.nom.toLowerCase())}</div></div>
+    <div class="mb"><p>Madame, Monsieur,</p><p>Notre entreprise <b>${esc(E.denomination || E.nom)}</b> souhaite acheter ${A.bien.id === "mobilier" ? "du mobilier (une table, des chaises et un comptoir)" : A.bien.id === "caisse" ? "une caisse enregistreuse" : "un ordinateur"}.</p>
+      <p>Pourriez-vous nous envoyer votre <b>meilleure offre de prix</b> en précisant : le prix, les remises éventuelles, le délai et les frais de livraison, la garantie et les conditions de paiement ?</p>
+      <p>Avec nos remerciements,<br>${esc(E.prenom)} ${esc(E.nomEleve)}</p></div></div>`;
+}
+function docFactureVerrouillee(E, A){ const o = A.offres[A.choix], ht = Math.round(o.total / 1.21 * 100) / 100;
+  return `<div class="lockdoc"><div class="paper"><div class="dh"><div class="from"><div class="emb" style="background:#1E2A5A;color:#fff">🧾</div><div><div class="co">${esc(o.fNom)}</div></div></div>${blocFourn(o, "Client")}</div>
+      <h3 class="doc">FACTURE</h3><div class="ref">N° F-2026-…</div><table><tbody><tr><td>${esc(o.article)}</td><td>${eurC(ht)}</td></tr><tr><td>TVA 21 %</td><td>${eurC(o.total - ht)}</td></tr><tr><td><b>Total</b></td><td><b>${eurC(o.total)}</b></td></tr></tbody></table><p>PAYÉE</p></div>
+    <div class="lk"><div><b>🔒 Prochaine mission</b>La facture arrive bientôt…</div></div></div>`;
+}
+
+// ---------- Les étapes ----------
+function ETAPES(E, A){ const o = A.offres[A.choix];
+  return [
+    { ico:"🎯", court:"Besoins", titre:"Déterminer les besoins de l'entreprise", qui:["🙋 L'acheteur : toi"], doc:"La liste des besoins",
+      texte:["Avant d'acheter, on se pose deux questions : de quoi mon entreprise a-t-elle vraiment besoin pour fonctionner ? Et combien d'argent ai-je pour le faire ?","Pour ouvrir, chaque entreprise avait besoin au minimum de trois biens."],
+      retenir:"On n'achète pas au hasard : on part des <b>besoins</b> et du <b>budget</b>.",
+      question:"Votre entreprise a-t-elle besoin d'autre chose pour fonctionner ? Qu'achèteriez-vous ensuite ?",
+      visuel:`<div class="needs">${BIENS.map(b => `<div class="needc"><div class="i">${b.icone}</div><div><b>${esc(b.nom)}</b><p>${esc(b.pourquoi)}</p></div></div>`).join("")}</div>
+        <div class="budget">🏦 Budget de ${esc(E.denomination || E.nom)} avant l'achat : <b>${eurC(A.budgetAvant)}</b></div>` },
+    { ico:"📞", court:"Contacter", titre:"Contacter les fournisseurs", qui:["🙋 L'acheteur → 🏭 les fournisseurs"], doc:"La demande de prix",
+      texte:["Pour connaître les prix, on contacte plusieurs fournisseurs : en allant au magasin, par téléphone, par e-mail ou sur internet.","Une demande écrite (comme un e-mail) est la meilleure solution : elle laisse une trace."],
+      retenir:"La règle d'or : toujours comparer <b>au moins 3 fournisseurs</b>.",
+      question:"Quelle méthode avez-vous choisie ? Pourquoi une demande écrite est-elle plus sûre qu'un coup de téléphone ?",
+      visuel:docDemande(E, A) + `<div class="methods">${METHODES.map(m => `<div class="method ${m.id === A.methode.id ? "on" : ""}"><b>${m.icone} ${esc(m.nom)}</b><span class="p">✓ ${esc(m.pro)}</span><br><span class="c">✗ ${esc(m.con)}</span></div>`).join("")}</div>` },
+    { ico:"⚖️", court:"Choisir", titre:"Étudier et choisir une offre", qui:["🏭 Les fournisseurs → 🙋 l'acheteur"], doc:"L'offre de prix",
+      texte:["Chaque fournisseur répond avec une offre de prix : son prix, mais aussi ses conditions de vente (délai, livraison, garantie, paiement).","On compare tout, pas seulement le prix, puis on choisit pour de bonnes raisons."],
+      retenir:`Offre choisie : <b>${esc(o.fNom)}</b>${A.raisons.length ? ", parce que : " + esc(A.raisons.join(", ").toLowerCase()) : ""}.`,
+      question:"L'offre la moins chère est-elle toujours la meilleure ? Qu'est-ce qui peut faire changer d'avis ?",
+      visuel:`<div class="offres3">${A.offres.map((x,k) => docOffre(x, k === A.choix)).join("")}</div>${tableauComparatif(A)}` },
+    { ico:"📝", court:"Commander", titre:"Établir le bon de commande", qui:["🙋 L'acheteur → 🏭 le fournisseur"], doc:"Le bon de commande",
+      texte:["On ne dit pas simplement « je prends » : on envoie un bon de commande, une preuve écrite de ce qu'on achète.","Avant de l'envoyer, on vérifie : le bon fournisseur, le bon article, le bon prix, les bonnes conditions. Puis on signe."],
+      retenir:"Le bon de commande, c'est l'engagement de l'acheteur : on le <b>vérifie</b> et on le <b>signe</b>.",
+      question:"Que se passerait-il si on se trompait de quantité sur le bon de commande ?",
+      visuel:docBC(E, A) },
+    { ico:"📦", court:"Recevoir", titre:"Recevoir et vérifier la livraison", qui:["🏭 Le fournisseur → 🙋 l'acheteur"], doc:"Le bon de livraison",
+      texte:[`Le fournisseur prévient que la commande est prête (SMS ou e-mail), puis le livreur apporte la marchandise avec un bon de livraison.`,"Avant de signer, on compare le bon de livraison avec le bon de commande et on vérifie le colis."],
+      retenir:"Signer le bon de livraison veut dire : « J'ai bien tout reçu. » Après, il est <b>trop tard</b> pour se plaindre !",
+      question:"Que faites-vous si le colis est abîmé ou s'il manque un article ?",
+      visuel:`<div class="notif2"><div class="nh"><span>💬 SMS</span><span>${esc(o.fNom)}</span></div>Votre commande ${esc(A.bc.numero)} est prête ! Livraison prévue le ${esc(A.livraisonPrevue)}.</div><div style="height:14px"></div>${docBL(E, A)}
+        <div class="checks"><div>☑ C'est bien l'article commandé (même référence)</div><div>☑ La quantité est correcte : 1</div><div>☑ Le colis est en bon état</div></div>` },
+    { ico:"💳", court:"Payer", titre:"Payer la livraison", qui:["🙋 L'acheteur → 🏭 le fournisseur"], doc:"Le reçu de paiement",
+      texte:["Les conditions de vente prévoyaient un paiement à la livraison (on dit aussi « contre remboursement ») : on paie au moment où l'on reçoit la marchandise.","Le reçu est la preuve que l'on a payé : on le garde précieusement."],
+      retenir:`L'argent sort du compte en banque (− ${eurC(A.paiement.montant)}), mais l'entreprise possède maintenant ${A.bien.id === "mobilier" ? "du mobilier" : A.bien.id === "caisse" ? "une caisse enregistreuse" : "un ordinateur"} : c'est un <b>investissement</b>.`,
+      question:"Pourquoi faut-il garder le reçu ? Connaissez-vous d'autres façons de payer un fournisseur ?",
+      visuel:docRecu(A) },
+    { ico:"🧾", court:"Facture", titre:"Recevoir la facture", qui:["🏭 Le fournisseur → 🙋 l'acheteur"], doc:"La facture", lock:true,
+      texte:["Il manque encore un document : la facture. Elle détaille le prix hors TVA, la TVA (taxe sur la valeur ajoutée) et le total.","Pour un achat déjà payé, elle porte la mention « payée » : on parle de facture acquittée. On la compare avec le bon de commande et le bon de livraison."],
+      retenir:"🔒 C'est le programme de la <b>prochaine mission</b> !",
+      question:"D'après vous, à quoi sert une facture si on a déjà payé et reçu un reçu ?",
+      visuel:docFactureVerrouillee(E, A) },
+    { ico:"🔄", court:"Le circuit", large:true, titre:"Le circuit des documents", qui:["🙋 L'acheteur", "🏭 Le fournisseur"], doc:"Tous les documents",
+      texte:["Un achat, c'est un aller-retour de documents entre l'acheteur et le fournisseur. Chaque document a son rôle et sert de preuve.","Dans votre entreprise, vous garderez toujours une copie de chacun d'eux."],
+      retenir:"Demande de prix → offre de prix → bon de commande → bon de livraison → paiement → facture.",
+      question:"Qui envoie quel document ? Pouvez-vous refaire le circuit sans regarder l'écran ?",
+      visuel:`<div class="circuit"><div class="side glass"><div><div class="i">🙋</div><b>L'acheteur</b><small style="color:var(--soft)">${esc(E.denomination || E.nom)}</small></div></div>
+        <div class="flows">${[["→","Demande de prix","« Quels sont vos prix ? »"],["←","Offre de prix","Le prix et les conditions de vente"],["→","Bon de commande","« Je confirme mon achat »"],
+          ["←","Marchandise + bon de livraison","L'acheteur vérifie et signe"],["→","Paiement","Le fournisseur remet un reçu"],["←","Facture","Prochaine mission", true]]
+          .map(f => `<div class="flow ${f[3] ? "soon" : ""}"><span class="ar">${f[0] === "→" ? "➡️" : ""}</span><span class="t"><b>${f[1]}</b><small>${f[2]}</small></span><span class="ar">${f[0] === "←" ? "⬅️" : ""}</span></div>`).join("")}</div>
+        <div class="side glass"><div><div class="i">🏭</div><b>Le fournisseur</b><small style="color:var(--soft)">${esc(o.fNom)}</small></div></div></div>` }
+  ];
+}
+
+V.etapes = () => {
+  const { E, A, fictif } = exemple(), L = ETAPES(E, A), n = APP.etape = Math.max(0, Math.min(APP.etape || 0, L.length - 1)), s = L[n];
+  const options = elevesM2();
+  return head("Mission 2 · Équipe ton entreprise", "Les étapes <span class='grad'>d'un achat</span>", "De l'idée d'acheter jusqu'au paiement : ce que chaque élève a vécu dans la mission 2, étape par étape.")
+    + `<div class="ex-bar"><span class="chip">📁 Exemple utilisé :</span>
+        <select id="selEx" aria-label="Exemple"><option value="fictif" ${fictif ? "selected" : ""}>Exemple fictif : ${esc(E_FICTIF.denomination)} (ordinateur)</option>
+          ${options.map(x => `<option value="${esc(x.email)}" ${!fictif && E.email === x.email ? "selected" : ""}>${esc(x.prenom)} ${esc(x.nomEleve)} – ${esc(x.denomination)}</option>`).join("")}</select>
+        ${!fictif ? `<select id="selAchat" aria-label="Achat">${(E.m2.achats || []).map((a,k) => a.paiement ? `<option value="${k}" ${k === (APP.exAchat || 0) ? "selected" : ""}>Achat ${k + 1} : ${esc(a.bien.nom)}</option>` : "").join("")}</select>` : ""}
+        ${options.length ? "" : `<span class="help">Les exemples des élèves apparaîtront ici dès qu'ils auront terminé un achat.</span>`}</div>
+    <div class="stepbar">${L.map((x,i) => `<button class="sb ${i === n ? "on" : i < n ? "vu" : ""} ${x.lock ? "lock" : ""}" data-etape="${i}"><span class="n">${x.ico}</span>${i < 7 ? (i + 1) + ". " : ""}${esc(x.court)}</button>`).join("")}</div>
+    <div class="slide ${s.large ? "large" : ""} fade-in">
+      <div class="sx glass"><div class="num">${n < 7 ? `ÉTAPE ${n + 1} SUR 7` : "POUR RÉSUMER"}</div><h3>${esc(s.titre)}</h3>
+        <div class="who">${s.qui.map(q => `<span>${q}</span>`).join("")}<span>📄 ${esc(s.doc)}</span></div>
+        ${s.texte.map(t => `<p>${t}</p>`).join("")}<div class="retenir">💡 ${s.retenir}</div></div>
+      <div class="sdoc">${s.visuel}</div>
+    </div>
+    ${ask(esc(s.question))}
+    <div class="snav"><button class="btn btn-ghost" data-snav="-1" ${n === 0 ? "disabled" : ""}>← Étape précédente</button><span class="pos">${n + 1} / ${L.length}</span><button class="btn btn-main" data-snav="1" ${n === L.length - 1 ? "disabled" : ""}>Étape suivante →</button></div>`;
+};
+
+// ======================================================================
 //  DONNÉES : Google Sheet ou démonstration
 // ======================================================================
 async function charger(silencieux){
@@ -787,6 +1117,8 @@ document.addEventListener("click", (e) => {
   if (b.dataset.vue){ APP.vue = b.dataset.vue; render(); window.scrollTo({top:0}); return; }
   if (b.dataset.nav){ const n = avecEntreprise().length; APP.idx = (APP.idx + (+b.dataset.nav) + n) % n; render(); return; }
   if (b.dataset.idx !== undefined){ APP.idx = +b.dataset.idx; render(); return; }
+  if (b.dataset.etape !== undefined){ APP.etape = +b.dataset.etape; render(); return; }
+  if (b.dataset.snav){ APP.etape += +b.dataset.snav; render(); window.scrollTo({top:0, behavior:"smooth"}); return; }
   switch (b.dataset.act){
     case "login": { const c = $("#cle"); APP.cle = c ? c.value.trim() : APP.cle; charger().then(planifier); break; }
     case "demo": APP.source = "demo"; APP.err = ""; APP.config = { acces:true, missionsOuvertes:["1"], max:4 }; APP.liste = demo(); render(); planifier(); break;
@@ -804,9 +1136,18 @@ document.addEventListener("click", (e) => {
       APP.source = null; APP.liste = []; APP.err = ""; clearInterval(minuterie); render(); break;
   }
 });
-document.addEventListener("change", (e) => { if (e.target.id === "selEleve"){ APP.idx = +e.target.value; render(); } });
+document.addEventListener("change", (e) => {
+  if (e.target.id === "selEleve"){ APP.idx = +e.target.value; render(); }
+  if (e.target.id === "selEx"){ APP.exemple = e.target.value; APP.exAchat = 0;
+    const E = APP.liste.find(x => x.email === APP.exemple); if (E && E.m2){ const k = (E.m2.achats || []).findIndex(a => a.paiement); APP.exAchat = Math.max(0, k); } render(); }
+  if (e.target.id === "selAchat"){ APP.exAchat = +e.target.value; render(); }
+});
 document.addEventListener("keydown", (e) => {
   if (e.target.id === "cle" && e.key === "Enter"){ APP.cle = e.target.value.trim(); charger().then(planifier); return; }
+  if (APP.vue === "etapes" && APP.source && !["INPUT","SELECT"].includes(e.target.tagName)){
+    if (e.key === "ArrowRight" && APP.etape < 7){ APP.etape++; render(); }
+    if (e.key === "ArrowLeft" && APP.etape > 0){ APP.etape--; render(); }
+  }
   if (APP.vue === "eleve" && APP.source && !["INPUT","SELECT"].includes(e.target.tagName)){
     const n = avecEntreprise().length; if (!n) return;
     if (e.key === "ArrowRight"){ APP.idx = (APP.idx + 1) % n; render(); }
