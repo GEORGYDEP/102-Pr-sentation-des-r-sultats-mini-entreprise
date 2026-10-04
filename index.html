@@ -388,14 +388,16 @@ const typeOf = (E) => TYPES.find(t => t.id === E.typeId);
 const pct = (a, b) => b ? Math.round(a / b * 100) : 0;
 const heure = (d) => d.toLocaleTimeString("fr-BE", {hour:"2-digit", minute:"2-digit"});
 
-function jsonp(params, timeout = 20000){
+function jsonp(params, timeout = 40000){
   return new Promise((resolve, reject) => {
-    const cb = "cbProf" + Date.now() + Math.floor(Math.random()*1e6);
+    const cb = "cbJ" + Date.now() + Math.floor(Math.random()*1e6);
     const s = document.createElement("script");
-    const fin = () => { clearTimeout(t); delete window[cb]; s.remove(); };
-    const t = setTimeout(() => { fin(); reject(new Error("timeout")); }, timeout);
-    window[cb] = (d) => { fin(); resolve(d); };
-    s.onerror = () => { fin(); reject(new Error("reseau")); };
+    let fini = false;
+    // Une réponse qui arrive en retard ne provoque plus d'erreur : la fonction reste définie (vide) un moment.
+    const fin = () => { fini = true; clearTimeout(t); s.remove(); window[cb] = function(){}; setTimeout(() => { try { delete window[cb]; } catch(e) {} }, 120000); };
+    const t = setTimeout(() => { if (!fini){ fin(); reject(new Error("timeout")); } }, timeout);
+    window[cb] = (d) => { if (fini) return; fin(); resolve(d); };
+    s.onerror = () => { if (!fini){ fin(); reject(new Error("reseau")); } };
     s.src = CONFIG.ENDPOINT_URL + "?" + new URLSearchParams(Object.assign({}, params, {callback:cb, _:Date.now()})).toString();
     document.body.appendChild(s);
   });
@@ -484,12 +486,11 @@ function carteVisite(E){
       <div class="who2">${esc(E.prenom)} ${esc(E.nomEleve)}</div><div>${esc(fonctionE(E))}</div><div>${esc(adr(E))}</div><div>${esc(E.email2)}</div></div></div>`;
 }
 function patrimoine(E){
-  if (E.enBanque == null) return `<div class="empty">Patrimoine pas encore calculé (l'élève n'a pas encore choisi seul ou à plusieurs).</div>`;
-  const apport = E.enBanque + E.frais;
-  const f = (n) => n.toLocaleString("fr-BE") + " €";
+  if (E.enBanque == null) return `<div class="empty">Patrimoine pas encore calculé (l'élève n'a pas encore choisi sa forme d'entreprise).</div>`;
+  const apport = E.enBanque + E.frais, f = (n) => n.toLocaleString("fr-BE") + " €";
   return `<div class="patri" style="--b:${E.couleur || "#8E4EC6"};--ob:${onColor(E.couleur || "#8E4EC6")}"><div class="ph">Patrimoine de départ</div>
-    <div class="pc"><div><h6>Ce qu'elle possède</h6><div class="pl"><span>Argent en banque</span><span>${f(E.enBanque)}</span></div></div>
-      <div><h6>D'où vient l'argent</h6><div class="pl"><span>Apport</span><span>${f(apport)}</span></div><div class="pl neg"><span>Frais de création</span><span>− ${f(E.frais)}</span></div></div></div>
+    <div class="pc"><div><h6>Ce qu'elle possède</h6><div class="pl"><span style="color:#9A9DB4;font-style:italic">Matériel</span><span>0 €</span></div><div class="pl"><span>Argent en banque</span><span>${f(E.enBanque)}</span></div><div class="pl" style="font-weight:800;border-bottom:0"><span>Total</span><span>${f(E.enBanque)}</span></div></div>
+      <div><h6>D'où vient l'argent</h6><div class="pl"><span>Apport</span><span>${f(apport)}</span></div><div class="pl neg"><span>Frais de création</span><span>− ${f(E.frais)}</span></div><div class="pl" style="font-weight:800;border-bottom:0"><span>Total</span><span>${f(E.enBanque)}</span></div></div></div>
     <div class="pt"><span>Valeur de l'entreprise</span><span>${f(E.enBanque)}</span></div></div>`;
 }
 function donut(parts, size = 170, label = ""){
