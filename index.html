@@ -511,7 +511,7 @@ const ETAPES_ACHAT = [["bien","Choisir le bien"],["methode","Chercher"],["offres
 const CONFIG = {
   ENDPOINT_URL: "https://script.google.com/macros/s/AKfycbwkApoh4ASdA7c9OOUMZTRjPFXZ-7jWGQ_VUsdJaVwIzYxLxoQw5dJjyjCcmHX_6KATGA/exec",
   CLE_STOCKAGE: "mini-entreprise-3p-prof-cle",
-  AUTO_REFRESH_S: 60
+  AUTO_REFRESH_S: 90
 };
 const STYLES = [["moderne","Moderne"],["elegant","Élégant"],["fun","Fun"],["street","Street"]];
 const POLICES = { moderne:"Outfit, Arial, sans-serif", elegant:"'Playfair Display', Georgia, serif", fun:"Fredoka, 'Comic Sans MS', sans-serif", street:"'Bebas Neue', Impact, sans-serif" };
@@ -853,7 +853,11 @@ function rail(){
     <div class="foot">Mission 1 : création de l'entreprise<br>Données : ${APP.source === "demo" ? "démonstration" : "Google Sheet"}</div></nav>`;
 }
 function topbar(){
-  const s = APP.source === "demo" ? `<span class="dot demo"></span>Données de démonstration` : APP.err ? `<span class="dot off"></span>${esc(APP.err)}` : `<span class="dot"></span>En direct du Google Sheet${APP.maj ? " · mis à jour à " + heure(APP.maj) : ""}`;
+  const quand = APP.maj ? (APP.maj.toDateString() === new Date().toDateString() ? heure(APP.maj) : APP.maj.toLocaleDateString("fr-BE") + " " + heure(APP.maj)) : "";
+  const s = APP.source === "demo" ? `<span class="dot demo"></span>Données de démonstration`
+    : APP.err ? `<span class="dot off"></span>${esc(APP.err)}${quand ? " · données de " + quand : ""}`
+    : APP.busy ? `<span class="spin"></span> Actualisation…${quand ? " · données de " + quand : ""}`
+    : `<span class="dot"></span>En direct du Google Sheet${quand ? " · mis à jour à " + quand : ""}`;
   return `<div class="topbar"><div class="src glass">${s}</div>
     <div class="tb-r">
       ${APP.source === "live" ? `<button class="btn btn-ghost ${APP.auto ? "on" : ""}" data-act="auto" title="Actualiser toutes les ${CONFIG.AUTO_REFRESH_S} secondes">${APP.auto ? "⏱️ Auto : oui" : "⏱️ Auto : non"}</button>
@@ -1057,20 +1061,36 @@ V.etapes = () => {
 // ======================================================================
 //  DONNÉES : Google Sheet ou démonstration
 // ======================================================================
+const CLE_CACHE = "mini-entreprise-3p-prof-cache";
+const attendre = (ms) => new Promise(r => setTimeout(r, ms));
+function appliquerDonnees(r, maj){
+  APP.source = "live"; APP.config = r.config || null; APP.maj = maj;
+  APP.liste = (r.dossiers || []).map(normaliser).filter(Boolean).sort((a,b) => (a.nomEleve + a.prenom).localeCompare(b.nomEleve + b.prenom, "fr"));
+}
+/** Chargement robuste : 3 essais espacés (60 s chacun) ; les dernières données restent affichées en cas d'échec. */
 async function charger(silencieux){
   if (!APP.cle){ APP.err = "Entre la clé professeur."; render(); return; }
+  if (APP.busy) return;
   APP.busy = true; if (!silencieux) render();
-  try {
-    const r = await jsonp({action:"eleves", cle:APP.cle});
-    APP.busy = false;
-    if (!r || !r.ok){ APP.err = r && r.erreur === "cle_invalide" ? "Clé incorrecte : vérifie CLE_PROF dans l'onglet Config." : "Réponse inattendue du Google Sheet."; if (!APP.liste.length) APP.source = null; render(); return; }
-    try { localStorage.setItem(CONFIG.CLE_STOCKAGE, APP.cle); } catch(e) {}
-    APP.err = ""; APP.source = "live"; APP.config = r.config || null; APP.maj = new Date();
-    APP.liste = (r.dossiers || []).map(normaliser).filter(Boolean).sort((a,b) => (a.nomEleve + a.prenom).localeCompare(b.nomEleve + b.prenom, "fr"));
-    render();
-  } catch(e) {
-    APP.busy = false; APP.err = "Impossible de joindre le Google Sheet."; if (!APP.liste.length) APP.source = null; render();
+  const essais = silencieux ? 1 : 3;
+  for (let i = 0; i < essais; i++){
+    try {
+      const r = await jsonp({action:"eleves", cle:APP.cle}, 60000);
+      APP.busy = false;
+      if (!r || !r.ok){
+        APP.err = r && r.erreur === "cle_invalide" ? "Clé incorrecte : vérifie CLE_PROF dans l'onglet Config." : "Réponse inattendue du Google Sheet.";
+        if (!APP.liste.length) APP.source = null; render(); return;
+      }
+      try { localStorage.setItem(CONFIG.CLE_STOCKAGE, APP.cle); localStorage.setItem(CLE_CACHE, JSON.stringify({ maj:Date.now(), dossiers:r.dossiers, config:r.config })); } catch(e) {}
+      APP.err = ""; appliquerDonnees(r, new Date()); render(); return;
+    } catch(e) {
+      if (i < essais - 1){ APP.err = `Google est très occupé (élèves en plein travail) : nouvel essai ${i + 2}/${essais}…`; render(); await attendre(4000 + i * 6000); }
+    }
   }
+  APP.busy = false;
+  if (APP.liste.length) APP.err = "Google est très occupé : affichage des dernières données reçues. Nouvel essai automatique dans un instant.";
+  else { APP.err = "Impossible de joindre le Google Sheet pour l'instant (Google est peut-être très occupé). Réessaie dans un instant."; APP.source = null; }
+  render();
 }
 function demo(){
   let seed = 7; const rnd = () => (seed = (seed * 9301 + 49297) % 233280) / 233280, pick = (a) => a[Math.floor(rnd() * a.length)];
@@ -1132,7 +1152,7 @@ document.addEventListener("click", (e) => {
       break;
     case "deco":
       if (APP.source === "live" && !confirm("Se déconnecter et oublier la clé sur cet ordinateur ?")) return;
-      if (APP.source === "live"){ try { localStorage.removeItem(CONFIG.CLE_STOCKAGE); } catch(x) {} APP.cle = ""; }
+      if (APP.source === "live"){ try { localStorage.removeItem(CONFIG.CLE_STOCKAGE); localStorage.removeItem(CLE_CACHE); } catch(x) {} APP.cle = ""; }
       APP.source = null; APP.liste = []; APP.err = ""; clearInterval(minuterie); render(); break;
   }
 });
@@ -1157,6 +1177,9 @@ document.addEventListener("keydown", (e) => {
 });
 document.addEventListener("fullscreenchange", () => { if (!document.fullscreenElement) document.body.classList.remove("projo"); });
 
+if (APP.cle){
+  try { const c = JSON.parse(localStorage.getItem(CLE_CACHE) || "null"); if (c && c.dossiers) appliquerDonnees(c, new Date(c.maj)); } catch(e) {}
+}
 render();
 if (APP.cle) charger().then(planifier);
 </script>
