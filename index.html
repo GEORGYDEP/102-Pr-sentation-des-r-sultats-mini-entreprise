@@ -418,6 +418,109 @@ body.projo main{padding:22px 40px}
 td.mono{font-family:var(--mono); white-space:nowrap}
 @media (max-width:1200px){ .docs3,.why3{grid-template-columns:1fr} .ba3{grid-template-columns:1fr} .arr3{transform:rotate(90deg); text-align:center} .tax2{grid-template-columns:1fr} }
 
+/* ═══ Mission 2 v1.1 : le modèle des documents choisi par chaque élève ═══ */
+.paper.doc-perso{position:relative; isolation:isolate; overflow:hidden}
+.doc-perso .co,.doc-perso h3.doc,.doc-perso .slg{font-family:var(--doc-font); font-weight:var(--doc-weight); font-style:var(--doc-style); letter-spacing:var(--doc-ls)}
+.doc-perso .co,.doc-perso h3.doc{color:var(--doc-ink)}
+.doc-perso .emb{width:48px; height:48px; border-radius:12px; display:grid; place-items:center; font-size:24px; flex:none}
+.doc-perso th{background:color-mix(in srgb,var(--doc) 12%,#fff); border-bottom-color:var(--doc-ink)}
+.doc-perso .sig{justify-content:space-between; align-items:center; gap:18px}
+.doc-perso .sig > div{margin-left:auto}
+.doc-perso .phrase{font-style:italic; color:#3A3E58; max-width:46%; margin:0; font-size:14px}
+.doc-perso .foot .slg{display:block; font-size:14px; color:var(--doc-ink); margin-bottom:3px}
+.doc-perso .fili{position:absolute; z-index:-1; top:52%; left:56%; transform:translate(-50%,-50%) rotate(-14deg); font-size:260px; line-height:1; opacity:.07; pointer-events:none}
+.doc-perso .place2{font-size:14px; margin-bottom:8px}
+.doc-perso .tbloc{align-self:flex-end; flex:1 1 220px}
+.doc-perso .tbloc .ref{margin-bottom:0}
+.tpl-classique .dh{border-bottom:3px solid var(--doc); padding-bottom:12px}
+.tpl-bandeau .band{display:flex; justify-content:space-between; align-items:center; gap:16px; flex-wrap:wrap; margin:-26px -30px 18px; padding:18px 30px; background:var(--doc); color:var(--on-doc)}
+.tpl-bandeau .band .from{flex:0 1 auto}
+.tpl-bandeau .band .co{color:var(--on-doc); font-size:23px}
+.tpl-bandeau .band .emb{box-shadow:0 0 0 3px rgba(255,255,255,.85)}
+.tpl-bandeau .band .bco{display:flex; gap:16px; font-size:12px; line-height:1.4; opacity:.94}
+.tpl-bandeau .band .bco p{margin:0}
+.tpl-bandeau .band .ids{font-family:var(--mono); font-size:11px; white-space:nowrap}
+.tpl-bandeau .dh,.tpl-centre .dh{margin-bottom:6px}
+.tpl-colonne{border-left:14px solid var(--doc)}
+.tpl-colonne h3.doc{display:inline-block; background:var(--doc); color:var(--on-doc); padding:2px 12px; border-radius:8px}
+.tpl-colonne th{background:var(--doc); color:var(--on-doc); border-bottom-color:var(--doc)}
+.tpl-centre .ctr{text-align:center; border-bottom:5px double var(--doc); padding-bottom:10px; margin-bottom:14px}
+.tpl-centre .ctr-n{display:flex; flex-direction:column; align-items:center; gap:6px}
+.tpl-centre .ctr .co{font-size:25px; line-height:1.15}
+.tpl-centre .ctr p{font-size:12.5px; color:#4A4E68; margin:3px 0 0}
+.tpl-centre .ctr .ids{font-family:var(--mono); font-size:11px}
+.tpl-centre h3.doc{letter-spacing:.08em}
+.tpl-centre th{background:none; border-bottom:2px solid var(--doc)}
+.docs3 .doc-perso .emb{width:36px; height:36px; font-size:18px}
+.docs3 .tpl-bandeau .band{margin:-16px -16px 12px; padding:12px 16px}
+.docs3 .tpl-bandeau .band .co{font-size:16px}
+.docs3 .tpl-bandeau .band .bco{font-size:10px; flex-direction:column; gap:3px}
+.docs3 .tpl-bandeau .band .ids{font-size:9.5px}
+.docs3 .tpl-centre .ctr .co{font-size:17px}
+.docs3 .tpl-centre .ctr p{font-size:10px}
+.docs3 .tpl-colonne{border-left-width:8px}
+.docs3 .doc-perso .phrase,.docs3 .doc-perso .foot .slg,.docs3 .doc-perso .place2{font-size:11px}
+.docs3 .doc-perso .fili{font-size:150px}
+.docs3 .doc-perso .sig{flex-direction:column; align-items:stretch; gap:6px}
+.docs3 .doc-perso .phrase{max-width:none}
+/* Miniatures des modèles (comme dans l'application élève) */
+.mdl-mini{display:flex; flex-direction:column; gap:4px; width:56px; aspect-ratio:3/4; background:#fff; border-radius:5px; padding:6px; overflow:hidden; flex:none; box-shadow:0 4px 12px rgba(0,0,0,.35)}
+.mdl-mini span{display:block; flex:none}
+.mdl-mini .l{height:3px; border-radius:2px; background:#D5D8E6}
+.mdl-mini .hd{display:flex; align-items:center; gap:3px}
+.mdl-mini .mk{width:9px; height:9px; border-radius:50%; background:var(--m)}
+.mdl-mini .nm{height:4px; width:50%; border-radius:2px; background:var(--m)}
+.mdl-mini .rl{height:2px; background:var(--m)}
+.mdl-mini .tt{height:4px; width:40%; border-radius:2px; background:var(--m); opacity:.85}
+.mdl-mini .tb{height:10px; border-radius:2px; margin-top:auto; background:color-mix(in srgb,var(--m) 20%,#fff)}
+.mdl-mini.m-bandeau .bd{display:flex; align-items:center; gap:3px; margin:-6px -6px 2px; padding:5px 6px; background:var(--m)}
+.mdl-mini.m-bandeau .bd .mk{background:#fff} .mdl-mini.m-bandeau .bd .nm{background:rgba(255,255,255,.85)}
+.mdl-mini.m-colonne{border-left:5px solid var(--m)} .mdl-mini.m-colonne .tt{height:6px; opacity:1} .mdl-mini.m-colonne .tb{background:var(--m)}
+.mdl-mini.m-centre{align-items:center} .mdl-mini.m-centre .nm{width:62%}
+.mdl-mini.m-centre .dbl{align-self:stretch; height:4px; border-top:1px solid var(--m); border-bottom:1px solid var(--m)}
+.mdl-mini.m-centre .tb{align-self:stretch; background:none; border-top:2px solid var(--m)}
+/* Élève par élève : la carte « Son bon de commande » */
+.mdl-wrap{display:grid; grid-template-columns:minmax(0,1.25fr) minmax(0,1fr); gap:22px; align-items:start}
+.mdl-prev .paper{zoom:.8}
+.mdl-r{display:grid; grid-template-columns:150px minmax(0,1fr); gap:12px; align-items:center; padding:9px 0; border-bottom:1px solid var(--border-soft)}
+.mdl-r .k{color:var(--dim); font-size:14px}
+.mdl-r .v{display:flex; align-items:center; gap:10px; flex-wrap:wrap; color:#fff; min-width:0}
+.mdl-r .v small{color:var(--soft); font-size:13.5px; font-style:italic; flex-basis:100%}
+.mdl-dot{width:22px; height:22px; border-radius:50%; border:2px solid rgba(255,255,255,.65); flex:none}
+.mdl-fx{font-size:21px; line-height:1.15; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+.mdl-same{font-size:11.5px; font-weight:700; padding:2px 9px; border-radius:999px; background:var(--yellow); color:#1a1033; white-space:nowrap}
+.mdl-says{display:flex; flex-wrap:wrap; gap:8px; margin-top:14px}
+.mdl-says span{padding:7px 12px; border-radius:12px; font-size:14px; border:1px solid var(--border); background:rgba(255,255,255,.06)}
+.mdl-says .ok{border-color:rgba(52,211,153,.5); background:rgba(52,211,153,.1); color:#b5f5c8}
+.mdl-says .ko{border-color:rgba(255,61,139,.5); background:rgba(255,61,139,.1); color:#ffc4d4}
+.st.verrouille{background:rgba(52,211,153,.15); color:#8ff0c6; border:1px solid rgba(52,211,153,.4)}
+.st.adopte{background:rgba(56,189,248,.14); color:#9fdcff; border:1px solid rgba(56,189,248,.4)}
+.st.choix{background:rgba(251,191,36,.14); color:#ffd97a; border:1px solid rgba(251,191,36,.4)}
+.st.ancien,.st.attente,.st.aucun{background:rgba(255,255,255,.07); color:var(--soft); border:1px solid var(--border)}
+.mdl-chip{display:inline-flex; align-items:center; gap:7px; font-size:13px; padding:4px 10px; border-radius:999px; background:rgba(255,255,255,.07); border:1px solid var(--border); white-space:nowrap}
+.mdl-chip i{width:12px; height:12px; border-radius:50%; flex:none}
+/* La vue « Les bons de commande de la classe » */
+.mx{width:100%; border-collapse:collapse; font-size:14px}
+.mx th,.mx td{padding:9px 8px; text-align:center; border-bottom:1px solid var(--border-soft)}
+.mx th{color:var(--dim); font-size:12.5px; font-weight:600}
+.mx th:first-child,.mx td:first-child{text-align:left; white-space:nowrap}
+.mx td.ok{background:rgba(52,211,153,.2)} .mx td.ko{background:rgba(255,61,139,.2)}
+.mx td b{font-family:var(--mono); font-size:19px; color:#fff} .mx td.zero b{color:var(--dim); font-weight:400}
+.mx-leg{display:flex; gap:14px; flex-wrap:wrap; margin-top:10px; font-size:13px; color:var(--soft)}
+.mx-leg i{display:inline-block; width:12px; height:12px; border-radius:3px; margin-right:6px; vertical-align:-1px}
+.fbar{display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin:0 0 14px}
+.fbar .btn{padding:8px 14px}
+.mdl-gal{display:grid; grid-template-columns:repeat(auto-fill,minmax(290px,1fr)); gap:16px}
+.mdl-g{cursor:pointer; border-radius:18px; padding:12px; background:rgba(255,255,255,.05); border:1px solid var(--border); transition:transform .25s, background .2s}
+.mdl-g:hover{transform:translateY(-4px); background:rgba(255,255,255,.08)}
+.mdl-doc{height:236px; overflow:hidden; border-radius:8px; -webkit-mask-image:linear-gradient(#000 72%,transparent); mask-image:linear-gradient(#000 72%,transparent)}
+.mdl-doc .paper{zoom:.48; box-shadow:none}
+.mdl-meta{margin-top:8px; display:flex; justify-content:space-between; gap:8px; align-items:center}
+.mdl-meta b{color:#fff; font-size:15px} .mdl-meta small{display:block; color:var(--dim); font-size:12.5px}
+.mdl-flag{font-size:12px; padding:3px 9px; border-radius:999px; white-space:nowrap}
+.mdl-flag.ok{background:rgba(52,211,153,.14); color:#9ff0c9} .mdl-flag.ko{background:rgba(255,61,139,.16); color:#ffc4d4}
+@media (max-width:1200px){ .mdl-wrap{grid-template-columns:1fr} }
+
 @media (max-width:1200px){ .kpis{grid-template-columns:repeat(3,minmax(0,1fr))} .grid2,.pres{grid-template-columns:1fr} .cards3{grid-template-columns:1fr 1fr} }
 @media (max-width:900px){ .app{grid-template-columns:1fr} .rail{position:static; height:auto; flex-direction:row; flex-wrap:wrap} .rail .foot,.navlab{display:none} .cols{grid-template-columns:1fr !important} .chain{grid-template-columns:1fr} .chain .arr{transform:rotate(90deg)} .defs{grid-template-columns:1fr} .cards3{grid-template-columns:1fr} }
 @media (prefers-reduced-motion:reduce){ *,*::before,*::after{animation:none !important; transition:none !important} }
@@ -1580,6 +1683,233 @@ document.addEventListener("input", (e) => {
     const el = $("#" + id); if (el){ el.focus(); try { el.setSelectionRange(pos, pos); } catch(x) {} }
   }
 });
+
+
+// ======================================================================
+//  MISSION 2 v1.1 : LE MODÈLE DES DOCUMENTS CHOISI PAR CHAQUE ÉLÈVE
+//  Lu dans entreprise.modeleDocuments (envoyé par la mission 2 dès que l'élève adopte son modèle).
+//  Le brouillon (etatApp) n'arrive pas dans la console : elle reçoit des dossiers allégés.
+// ======================================================================
+const IMAGES_DOC = [
+  { id:"serieuse", icone:"🤝", nom:"Sérieuse", texte:"« Voilà une entreprise de confiance. »" },
+  { id:"moderne", icone:"⚡", nom:"Moderne", texte:"« Cette entreprise est de son temps. »" },
+  { id:"chaleureuse", icone:"😊", nom:"Chaleureuse", texte:"« Ici, on est accueillant et souriant. »" },
+  { id:"prestige", icone:"💎", nom:"Prestige", texte:"« C'est une maison chic, qui soigne chaque détail. »" },
+  { id:"dynamique", icone:"🔥", nom:"Dynamique", texte:"« Une jeune entreprise pleine d'énergie ! »" }
+];
+const PRESETS_DOC = { serieuse:{ modele:"classique", couleurId:"bleunuit", police:"classique", filigrane:false, phrase:"formelle" },
+  moderne:{ modele:"bandeau", couleurId:"marque", police:"moderne", filigrane:false, phrase:"simple" },
+  chaleureuse:{ modele:"classique", couleurId:"orange", police:"fun", filigrane:true, phrase:"amicale" },
+  prestige:{ modele:"centre", couleurId:"dore", police:"elegant", filigrane:true, phrase:"formelle" },
+  dynamique:{ modele:"colonne", couleurId:"marque", police:"street", filigrane:false, phrase:"amicale" } };
+const MODELES_DOC = [["classique","Classique"],["bandeau","Bandeau"],["colonne","Colonne"],["centre","Centré"]];
+const COULEURS_DOC = [["marque","Couleur du logo",null],["noir","Noir","#1F2937"],["bleunuit","Bleu nuit","#1E2A5A"],["bleu","Bleu roi","#1D4ED8"],["turquoise","Turquoise","#0F766E"],
+  ["vert","Vert sapin","#166534"],["dore","Doré","#9A7412"],["orange","Orange","#C2410C"],["rouge","Rouge","#B91C1C"],["bordeaux","Bordeaux","#831843"],["violet","Violet","#6D28D9"]];
+const POLICES_DOC = {
+  moderne:{ nom:"Moderne", famille:"Outfit, Arial, sans-serif", poids:800, style:"normal", espace:"0" },
+  elegant:{ nom:"Élégant", famille:"'Playfair Display', Georgia, serif", poids:700, style:"italic", espace:"0" },
+  fun:{ nom:"Fun", famille:"Fredoka, 'Comic Sans MS', sans-serif", poids:600, style:"normal", espace:"0" },
+  street:{ nom:"Street", famille:"'Bebas Neue', Impact, sans-serif", poids:400, style:"normal", espace:".05em" },
+  classique:{ nom:"Classique", famille:"Fraunces, Georgia, serif", poids:600, style:"normal", espace:"0" },
+  machine:{ nom:"Machine à écrire", famille:"'Space Mono', Consolas, monospace", poids:700, style:"normal", espace:"0" }
+};
+const PHRASES_DOC = [["formelle","Polie","Nous vous remercions pour votre offre et vous confirmons notre commande."],
+  ["simple","Pratique","Merci de nous livrer dans le délai prévu dans votre offre."],
+  ["amicale","Amicale","Merci pour votre offre : au plaisir de travailler avec vous !"],["aucune","Pas de phrase",""]];
+const ACCORD_DOC = { petit:["moderne","dynamique","chaleureuse"], milieu:["serieuse","moderne","chaleureuse"], haut:["prestige","serieuse"] };
+const imageDoc = (id) => IMAGES_DOC.find(x => x.id === id) || null;
+const nomModeleDoc = (id) => (MODELES_DOC.find(x => x[0] === id) || [, "Classique"])[1];
+const policeDoc = (id) => POLICES_DOC[id] || POLICES_DOC.moderne;
+
+/** Le modèle envoyé par la mission 2, contrôlé (une valeur inconnue ne casse jamais l'affichage). */
+function lireModele(md){
+  if (!md || !md.modele) return null;
+  return { image: imageDoc(md.imageId) ? md.imageId : null, modele: MODELES_DOC.some(x => x[0] === md.modele) ? md.modele : "classique",
+    couleurId: COULEURS_DOC.some(x => x[0] === md.couleurId) ? md.couleurId : "perso", couleurHex: md.couleur || "",
+    police: POLICES_DOC[md.police] ? md.police : "moderne", slogan: md.slogan !== false, filigrane: !!md.filigrane,
+    phrase: PHRASES_DOC.some(x => x[0] === md.phraseId) ? md.phraseId : "aucune", verrouille: !!md.verrouille, choisiLe: md.choisiLe || "" };
+}
+const couleurDocE = (E, m) => m.couleurId === "marque" ? (E.couleur || "#8E4EC6") : ((COULEURS_DOC.find(x => x[0] === m.couleurId) || [])[2] || m.couleurHex || E.couleur || "#8E4EC6");
+const nomCouleurDocE = (m) => (COULEURS_DOC.find(x => x[0] === m.couleurId) || [, "Couleur personnalisée"])[1];
+const memeCouleur = (E, m) => m.couleurId === "marque" || (!!E.couleur && couleurDocE(E, m).toLowerCase() === E.couleur.toLowerCase());
+const memePolice = (E, m) => m.police === E.style;
+function styleDocE(E, m){
+  const c = couleurDocE(E, m), p = policeDoc(m.police);
+  return `--doc:${c};--doc-ink:${lum(c) <= .62 ? c : "#1D1F33"};--on-doc:${lum(c) > .62 ? "#1D1F33" : "#FFFFFF"};--doc-font:${p.famille};--doc-weight:${p.poids};--doc-style:${p.style};--doc-ls:${p.espace}`;
+}
+/** Où en est l'élève avec son modèle de documents. */
+function statutModele(E){
+  const m = E.modele, envoye = E.m2 && (E.m2.achats || []).some(a => a.bonDeCommande && a.bonDeCommande.envoyeParEmail);
+  if (m) return m.verrouille || envoye ? { cls:"verrouille", txt:"🔒 Modèle adopté et verrouillé" } : { cls:"adopte", txt:"✏️ Modèle adopté, encore modifiable" };
+  if (!E.m2) return { cls:"aucun", txt:"Mission 2 pas commencée" };
+  if (E.m2.statut === "termine") return { cls:"ancien", txt:"Mission 2 faite avant la personnalisation" };
+  if (E.m2.etape && E.m2.etape.etape === "commande") return { cls:"choix", txt:"✏️ En train de choisir" };
+  return { cls:"attente", txt:"Pas encore arrivé au bon de commande" };
+}
+/** Ce que l'image dit de la stratégie : à valoriser ou à discuter en classe. */
+function coherenceModele(E, m){
+  const st = E.strategie, im = imageDoc(m.image); if (!im || !st) return null;
+  if (st === "haut" && m.image === "dynamique") return { cls:"ko", court:"À discuter", txt:"⚠️ Image dynamique pour une entreprise haut de gamme : à discuter" };
+  if (st === "petit" && m.image === "prestige") return { cls:"ko", court:"À discuter", txt:"⚠️ Image prestige avec des petits prix : elle risque de paraître chère" };
+  if ((ACCORD_DOC[st] || []).includes(m.image)) return { cls:"ok", court:"Colle à la stratégie", txt:"✅ L'image colle bien à sa stratégie" };
+  return { cls:"", court:"", txt:"➖ Choix possible, sans lien fort avec sa stratégie" };
+}
+function ressemblanceLogo(E, m){
+  const c = memeCouleur(E, m), p = memePolice(E, m);
+  return c && p ? "🎯 Garde la couleur et la police de son logo" : c ? "🎨 Garde la couleur de son logo" : p ? "🔤 Garde la police de son logo" : "🔀 Couleur et police différentes de son logo (seul le symbole reste)";
+}
+function miniModele(id, couleur){
+  const l = (w) => `<span class="l" style="width:${w}%"></span>`, st = `style="--m:${couleur}"`;
+  if (id === "bandeau") return `<span class="mdl-mini m-bandeau" ${st}><span class="bd"><span class="mk"></span><span class="nm"></span></span>${l(45)}${l(80)}<span class="tt"></span>${l(92)}<span class="tb"></span></span>`;
+  if (id === "colonne") return `<span class="mdl-mini m-colonne" ${st}><span class="hd"><span class="mk"></span><span class="nm"></span></span>${l(60)}${l(45)}<span class="tt"></span>${l(92)}<span class="tb"></span></span>`;
+  if (id === "centre") return `<span class="mdl-mini m-centre" ${st}><span class="mk"></span><span class="nm"></span>${l(70)}<span class="dbl"></span><span class="tt"></span>${l(92)}<span class="tb"></span></span>`;
+  return `<span class="mdl-mini m-classique" ${st}><span class="hd"><span class="mk"></span><span class="nm"></span></span>${l(60)}<span class="rl"></span>${l(45)}<span class="tt"></span>${l(92)}<span class="tb"></span></span>`;
+}
+const dateChoix = (iso) => { const d = iso ? new Date(iso) : null; return d && !isNaN(d) ? d.toLocaleDateString("fr-BE", {day:"numeric", month:"long", year:"numeric"}) + " à " + heure(d) : "–"; };
+
+/** En-tête de l'entreprise de l'élève dessiné selon son modèle (même rendu que dans l'application élève). */
+function papierEnteteE(E, m, droite, place, titre){
+  const b = E.couleur || "#8E4EC6";
+  const emb = `<div class="emb" style="background:${b};color:${onColor(b)}">${E.symbole || "★"}</div>`, co = `<div class="co">${esc(E.denomination || E.nom)}</div>`;
+  const coords = `${esc(E.rue)} ${esc(E.numero)}<br>${esc(E.cp)} ${esc(E.commune)}<br>${esc(E.email2)}`, ids = `N° d'entreprise ${esc(E.bce)}<br>TVA BE ${esc(E.bce)}<br>IBAN ${esc(E.iban)}`;
+  const ligneTitre = `<div class="dh"><div class="tbloc"><div class="place2">${place}</div>${titre}</div>${droite}</div>`;
+  if (m.modele === "bandeau") return `<div class="band"><div class="from">${emb}<div>${co}</div></div><div class="bco"><p>${coords}</p><p class="ids">${ids}</p></div></div>${ligneTitre}`;
+  if (m.modele === "centre") return `<div class="ctr"><div class="ctr-n">${emb}${co}</div><p>${coords.replace(/<br>/g, " · ")}</p><p class="ids">${ids.replace(/<br>/g, " · ")}</p></div>${ligneTitre}`;
+  return `<div class="dh"><div class="from">${emb}<div>${co}<p>${coords}</p><p class="ids">${ids}</p></div></div>${droite}</div><div class="place">${place}</div>${titre}`;
+}
+function docBCPerso(E, A, m){
+  const o = A.offres[A.choix], ph = PHRASES_DOC.find(x => x[0] === m.phrase);
+  const sig = A.bc.signature ? `<div class="signed">${esc(A.bc.signature)}</div>` : `<div class="signed" style="color:#9A9DB4">pas encore signé</div>`;
+  return `<div class="paper doc-perso tpl-${esc(m.modele)}" style="${styleDocE(E, m)}">
+    ${m.filigrane ? `<div class="fili" aria-hidden="true">${E.symbole || "★"}</div>` : ""}
+    ${papierEnteteE(E, m, blocFourn(o, "Fournisseur"), `${esc(E.commune)}, le ${esc(A.bc.date)}`, `<h3 class="doc">BON DE COMMANDE</h3><div class="ref">N° ${esc(A.bc.numero)} · Votre offre n° ${esc(o.numero)}</div>`)}
+    ${lignes(o)}<p><b>Conditions :</b> livraison sous ${o.delai} jours · livraison ${o.livraison ? "payante" : "gratuite"} · garantie ${o.garantie} an${o.garantie > 1 ? "s" : ""} · paiement ${esc(o.paiement)}.</p>
+    <div class="sig">${ph && ph[2] ? `<p class="phrase">${esc(ph[2])}</p>` : ""}<div>${sig}<small>Bon pour commande – ${esc(E.prenom)} ${esc(E.nomEleve)}, ${esc(fonctionE(E).toLowerCase())}</small></div></div>
+    <div class="foot">${m.slogan && E.slogan ? `<span class="slg">« ${esc(E.slogan)} »</span>` : ""}Document fictif – projet pédagogique, Institut Saint-Luc de Frameries</div></div>`;
+}
+// Tous les bons de commande de la console (étapes d'un achat, dossier facture…) prennent le modèle de l'élève
+const _docBCBase = docBC;
+docBC = function(E, A){ return E && E.modele ? docBCPerso(E, A, E.modele) : _docBCBase(E, A); };
+/** Le bon de commande à montrer pour un élève : son premier bon réel, sinon un exemple tiré du catalogue. */
+function achatBC(E){
+  const ach = (E.m2 && E.m2.achats) || [], k = ach.findIndex(a => a.bonDeCommande && a.offreChoisie && a.bien);
+  return (k >= 0 ? achatDepuisEleve(E, k) : null) || achatDepuisCatalogue("mobilier", "email", iStratE(E), [], E);
+}
+
+// Les fiches élèves gardent le modèle (et l'étape de la mission 2 pour savoir qui est en train de choisir)
+const _normaliserM2 = normaliser;
+normaliser = function(d){ const E = _normaliserM2(d); if (E) E.modele = lireModele((d.entreprise || {}).modeleDocuments); return E; };
+
+// Exemple fictif « Roue Libre » et démonstration : des modèles variés
+E_FICTIF.modele = E_FICTIF3.modele = Object.assign({ image:"moderne", slogan:true, verrouille:true, choisiLe:"2026-10-05T09:20:00Z" }, PRESETS_DOC.moderne, { police:"fun" });
+const _demoM2 = demo;
+demo = function(){
+  const imgs = ["moderne","prestige","dynamique","serieuse","chaleureuse","moderne","dynamique","prestige","chaleureuse","serieuse", null, "moderne"];
+  return _demoM2().map((E, i) => {
+    if (!E.m2) return E;
+    if (i === 12){ E.m2 = { statut:"en_cours", achats:[], etape:{ phase:"achat", achat:1, etape:"commande" } }; return E; }  // en train de choisir
+    const im = imgs[i]; if (!im) return E;                                                                               // mission faite avant la v1.1
+    const m = Object.assign({ image:im, slogan:i % 5 !== 2, verrouille:true, choisiLe:`2026-10-05T0${8 + i % 2}:${10 + i * 3}:00Z` }, PRESETS_DOC[im]);
+    if (i % 3 === 0) m.couleurId = "marque";
+    if (i % 4 === 1) m.police = E.style;
+    if (i === 7) m.phrase = "aucune";
+    E.modele = m; return E;
+  });
+};
+
+// Les étapes d'un achat : un mot sur le papier à en-tête à l'étape « Commander »
+const _ETAPESBase = ETAPES;
+ETAPES = function(E, A){
+  const L = _ETAPESBase(E, A);
+  if (L[3] && E.modele) L[3].texte = L[3].texte.concat(["Chaque entreprise l'envoie sur son propre <b>papier à en-tête</b> : son nom, son logo, ses couleurs. Tous ses documents se ressemblent : c'est son <b>image de marque</b>."]);
+  return L;
+};
+
+// Élève par élève : la carte « Son bon de commande »
+function carteModele(E){
+  const m = E.modele, s = statutModele(E), A = E.m2 || m ? achatBC(E) : null;
+  if (!m) return `<div class="card glass fade-in" style="margin-top:16px"><h4>🎨 Son bon de commande <span class="st ${s.cls}" style="margin-left:8px;vertical-align:3px">${esc(s.txt)}</span></h4>
+    ${s.cls === "ancien" && A ? `<div class="mdl-wrap"><div class="mdl-prev">${_docBCBase(E, A)}</div><div><p style="color:var(--soft)">Cet élève a fait la mission 2 avant la personnalisation des documents : son bon de commande a la présentation classique, aux couleurs de son logo.</p>
+      <p class="help" style="margin-top:8px">Pour qu'il choisisse quand même son modèle, il faudrait réinitialiser sa mission 2 dans le Google Sheet (menu 🏪 Mini-entreprise › Réinitialiser une mission) : il referait alors ses 3 achats.</p></div></div>`
+      : `<div class="empty">${s.cls === "choix" ? "Il est à l'étape du bon de commande : son modèle apparaîtra ici dès qu'il l'aura adopté." : "Le modèle apparaîtra ici quand l'élève aura adopté le look de son premier bon de commande (mission 2)."}</div>`}</div>`;
+  const im = imageDoc(m.image), p = policeDoc(m.police), c = couleurDocE(E, m), ph = PHRASES_DOC.find(x => x[0] === m.phrase), co = coherenceModele(E, m), st = strat(E);
+  const row = (k, v) => `<div class="mdl-r"><div class="k">${k}</div><div class="v">${v}</div></div>`;
+  return `<div class="card glass fade-in" style="margin-top:16px"><h4>🎨 Son bon de commande <span class="st ${s.cls}" style="margin-left:8px;vertical-align:3px">${esc(s.txt)}</span></h4>
+    <div class="mdl-wrap"><div class="mdl-prev">${docBCPerso(E, A, m)}</div>
+      <div>
+        ${row("L'image voulue", im ? `<b>${im.icone} ${esc(im.nom)}</b><small>Le fournisseur doit se dire : ${esc(im.texte)}</small>` : "–")}
+        ${row("Le modèle", `${miniModele(m.modele, c)}<b>${esc(nomModeleDoc(m.modele))}</b>`)}
+        ${row("La couleur", `<span class="mdl-dot" style="background:${c}"></span><b>${esc(nomCouleurDocE(m))}</b>${memeCouleur(E, m) ? `<span class="mdl-same">celle du logo</span>` : ""}`)}
+        ${row("La police des titres", `<span class="mdl-fx" style="font-family:${p.famille};font-weight:${p.poids};font-style:${p.style};letter-spacing:${p.espace}">${esc(E.nom || E.denomination)}</span><b>${esc(p.nom)}</b>${memePolice(E, m) ? `<span class="mdl-same">celle du logo</span>` : ""}`)}
+        ${row("Les petits plus", `<span class="chip">${m.slogan ? "✓" : "✗"} Slogan en bas</span><span class="chip">${m.filigrane ? "✓" : "✗"} Symbole en filigrane</span>`)}
+        ${row("Sa phrase", ph && ph[2] ? `« ${esc(ph[2])} »` : `<span style="color:var(--dim)">Pas de phrase</span>`)}
+        ${row("Choisi le", esc(dateChoix(m.choisiLe)))}
+        <div class="mdl-says">${co ? `<span class="${co.cls}">${co.txt}${st ? ` (${st.icone} ${esc(st.nom.toLowerCase())})` : ""}</span>` : ""}<span>${ressemblanceLogo(E, m)}</span></div>
+      </div></div></div>`;
+}
+const _eleveM2 = V.eleve;
+V.eleve = function(){
+  const html = _eleveM2(), L = avecEntreprise(); if (!L.length) return html;
+  const E = L[Math.max(0, Math.min(APP.idx, L.length - 1))], i = html.lastIndexOf(`<div class="thumbs">`);
+  return i < 0 ? html + carteModele(E) : html.slice(0, i) + carteModele(E) + html.slice(i);
+};
+
+// Vue d'ensemble : une colonne « Bon de commande » dans le tableau des élèves
+function puceModele(E){
+  const m = E.modele, s = statutModele(E);
+  if (!m) return `<span class="st ${s.cls}">${esc(s.cls === "choix" ? "✏️ en train de choisir" : s.cls === "ancien" ? "classique (v1.0)" : "–")}</span>`;
+  return `<span class="mdl-chip"><i style="background:${couleurDocE(E, m)}"></i>${esc(nomModeleDoc(m.modele))} · ${esc(policeDoc(m.police).nom.toLowerCase())}</span>`;
+}
+const _ensembleM2 = V.ensemble;
+V.ensemble = function(){
+  const html = _ensembleM2(), parEmail = {}; APP.liste.forEach(E => { parEmail[esc(E.email)] = E; });
+  return html.replace("<th>XP</th><th></th>", "<th>XP</th><th>Bon de commande</th><th></th>")
+    .replace(`<td colspan="6"><div class="empty">Aucune donnée pour le moment.</div>`, `<td colspan="7"><div class="empty">Aucune donnée pour le moment.</div>`)
+    .replace(/<td><button class="link" data-open="([^"]*)">Voir →<\/button><\/td><\/tr>/g, (t, em) => parEmail[em] ? `<td>${puceModele(parEmail[em])}</td>${t}` : t);
+};
+
+// Nouvelle vue : « Les bons de commande de la classe »
+APP.fModele = "toutes";
+V.modeles = () => {
+  const avecM = APP.liste.filter(E => E.modele), sans = APP.liste.filter(E => !E.modele && E.m2), base = APP.liste.filter(E => E.m2), n = avecM.length;
+  const cpt = (f) => avecM.filter(f).length, imgN = IMAGES_DOC.map(im => ({ im, v:cpt(E => E.modele.image === im.id) })).sort((a, b) => b.v - a.v);
+  const top = imgN[0] && imgN[0].v ? imgN[0] : null;
+  const vis = APP.fModele === "toutes" ? avecM : APP.fModele === "discuter" ? avecM.filter(E => (coherenceModele(E, E.modele) || {}).cls === "ko") : avecM.filter(E => E.strategie === APP.fModele);
+  const nbKo = cpt(E => (coherenceModele(E, E.modele) || {}).cls === "ko");
+  const bar = (ico, txt, v) => `<div class="bar" style="grid-template-columns:62px minmax(0,1fr) 120px 34px"><span class="e" style="display:flex;justify-content:center">${ico}</span><span class="t">${txt}</span><span class="track"><span class="fill" style="display:block;width:${pct(v, n)}%"></span></span><span class="v">${v}</span></div>`;
+  const filtre = (id, txt) => `<button class="btn btn-ghost ${APP.fModele === id ? "on" : ""}" data-fmod="${id}">${txt}</button>`;
+  return head("Mission 2 · Image de marque", "Les bons de commande <span class='grad'>de la classe</span>", "Chaque entreprise a choisi le look de ses documents : l'image qu'elle veut donner, le modèle, la couleur, la police. Ses choix collent-ils à sa stratégie ?")
+  + `<div class="kpis fade-in" style="grid-template-columns:repeat(4,minmax(0,1fr))">
+      <div class="kpi glass" style="--c:#e935c5"><div class="ic">🎨</div><div class="n">${n}/${base.length}</div><div class="l">modèles adoptés</div></div>
+      <div class="kpi glass" style="--c:#34d399"><div class="ic">🖌️</div><div class="n">${n ? pct(cpt(E => memeCouleur(E, E.modele)), n) + " %" : "–"}</div><div class="l">gardent la couleur de leur logo</div></div>
+      <div class="kpi glass" style="--c:#38bdf8"><div class="ic">🔤</div><div class="n">${n ? pct(cpt(E => memePolice(E, E.modele)), n) + " %" : "–"}</div><div class="l">gardent la police de leur logo</div></div>
+      <div class="kpi glass" style="--c:#fbbf24"><div class="ic">${top ? top.im.icone : "🏆"}</div><div class="n" style="font-size:30px">${top ? esc(top.im.nom) : "–"}</div><div class="l">image la plus choisie${top ? ` (${top.v})` : ""}</div></div></div>
+    <div class="grid2 fade-in" style="align-items:start">
+      <div class="panel glass"><h3>Les images choisies selon la stratégie</h3>
+        <table class="mx"><thead><tr><th>Stratégie</th>${IMAGES_DOC.map(im => `<th>${im.icone}<br>${esc(im.nom)}</th>`).join("")}</tr></thead><tbody>
+        ${STRATEGIES.map(s => `<tr><td>${s.icone} ${esc(s.nom)}</td>${IMAGES_DOC.map(im => { const v = cpt(E => E.strategie === s.id && E.modele.image === im.id);
+          const cls = (s.id === "haut" && im.id === "dynamique") || (s.id === "petit" && im.id === "prestige") ? "ko" : (ACCORD_DOC[s.id] || []).includes(im.id) ? "ok" : "";
+          return `<td class="${cls} ${v ? "" : "zero"}"><b>${v}</b></td>`; }).join("")}</tr>`).join("")}</tbody></table>
+        <div class="mx-leg"><span><i style="background:rgba(52,211,153,.45)"></i>l'image colle à la stratégie</span><span><i style="background:rgba(255,61,139,.5)"></i>à discuter en classe</span></div></div>
+      <div class="panel glass"><h3>Les modèles et les polices</h3>
+        ${MODELES_DOC.map(t => bar(`<span style="zoom:.62;display:flex">${miniModele(t[0], "#c084fc")}</span>`, esc(t[1]), cpt(E => E.modele.modele === t[0]))).join("")}
+        <div style="height:10px"></div>
+        ${Object.entries(POLICES_DOC).map(([id, p]) => bar(`<span style="font-family:${p.famille};font-weight:${p.poids};font-style:${p.style};font-size:22px;color:#fff">Aa</span>`, esc(p.nom), cpt(E => E.modele.police === id))).join("")}</div>
+    </div>
+    <h3 class="sub3">La galerie</h3>
+    <div class="fbar">${filtre("toutes", "Toutes")}${STRATEGIES.map(s => filtre(s.id, s.icone + " " + s.nom)).join("")}${nbKo ? filtre("discuter", `⚠️ À discuter (${nbKo})`) : ""}</div>
+    <div class="mdl-gal fade-in">${vis.map(E => { const co = coherenceModele(E, E.modele), s = strat(E), im = imageDoc(E.modele.image);
+      return `<div class="mdl-g" data-open="${esc(E.email)}" role="button" tabindex="0" title="Voir l'entreprise de ${esc(E.prenom)}"><div class="mdl-doc">${docBCPerso(E, achatBC(E), E.modele)}</div>
+        <div class="mdl-meta"><div><b>${esc(E.prenom)} ${esc(E.nomEleve)}</b><small>${s ? s.icone + " " + esc(s.nom) : ""}${im ? " · " + im.icone + " " + esc(im.nom) : ""}</small></div>
+          ${co && co.court ? `<span class="mdl-flag ${co.cls}">${esc(co.court)}</span>` : ""}</div></div>`; }).join("") || `<div class="empty">Aucun modèle${APP.fModele === "toutes" ? " adopté pour l'instant" : " dans ce filtre"}.</div>`}</div>
+    ${sans.length ? `<h3 class="sub3">Pas encore de modèle</h3><div class="tiles">${sans.map(E => { const st = statutModele(E);
+      return `<button class="tile" style="--b:${E.couleur || "#8E4EC6"}" data-open="${esc(E.email)}">${logoMark(E)}<span><span class="nm f-${E.style}">${esc(E.denomination || E.nom)}</span><small>${esc(E.prenom)} · ${esc(st.txt)}</small></span></button>`; }).join("")}</div>` : ""}`
+  + ask("Quel bon de commande inspire le plus confiance ? Lequel irait le mieux à une entreprise haut de gamme ? Pourquoi une entreprise garde-t-elle la même présentation sur tous ses documents ?");
+};
+(function(){ const i = VUES.findIndex(v => v[0] === "achats"); VUES.splice(i + 1, 0, ["modeles","🎨","Les bons de commande"]); })();
+document.addEventListener("click", (e) => { const b = e.target.closest("[data-fmod]"); if (b){ APP.fModele = b.dataset.fmod; render(); } });
+// Données gardées en cache au démarrage : on les relit avec toutes les extensions (missions 3 et modèle des documents)
+if (APP.cle && APP.source === "live"){ try { const c = JSON.parse(localStorage.getItem(CLE_CACHE) || "null"); if (c && c.dossiers) appliquerDonnees(c, new Date(c.maj)); } catch(e) {} }
 
 render();
 </script>
