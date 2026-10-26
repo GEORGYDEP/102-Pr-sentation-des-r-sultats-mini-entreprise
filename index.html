@@ -574,6 +574,13 @@ code{font-family:var(--mono); font-size:13px; background:rgba(255,255,255,.08); 
 #notes{position:fixed; right:20px; bottom:20px; z-index:90; display:grid; gap:8px; max-width:min(440px,calc(100vw - 40px))}
 .note-prof{padding:12px 16px; border-radius:14px; font-size:15px; background:rgba(16,40,32,.92); border:1px solid rgba(52,211,153,.6); color:#d6ffee; box-shadow:0 12px 30px rgba(0,0,0,.45); animation:fi .3s ease-out both}
 .note-prof.ko{background:rgba(60,14,28,.94); border-color:rgba(255,61,139,.7); color:#ffd6e2}
+.gsheet{margin-top:16px; padding-top:14px; border-top:1px solid var(--border-soft)}
+.gsheet h4{margin:0; font-size:16px; color:#fff}
+.gs-etat{font-size:14px; color:var(--soft); margin:6px 0 12px; line-height:1.5}
+.gs-etat.attente{color:#ffd97a} .gs-etat.ko{color:#ffb4c8}
+.jeton{margin-top:12px; padding:12px 14px; border-radius:14px; border:1px dashed rgba(251,191,36,.6); background:rgba(251,191,36,.08); font-size:14px}
+.jeton code{display:block; word-break:break-all; margin:8px 0 10px; padding:8px 10px; user-select:all}
+.jeton ol{margin:10px 0 0 18px; padding:0; color:var(--soft); font-size:13.5px; line-height:1.6}
 @media (max-width:1200px){ .pilot{grid-template-columns:1fr} }
 @media (max-width:700px){ .mtogs{grid-template-columns:1fr} .reglage{flex-direction:column; align-items:flex-start} }
 </style>
@@ -745,7 +752,9 @@ const CONFIG = {
   SUPABASE_URL: "https://ecewwrefhgxqvmmykhio.supabase.co",           // base de données de l'école (même projet que la JPO)
   SUPABASE_CLE: "sb_publishable_f5Gc6ezEciyzfSYz9wGzgw_IxZqpB_W",     // clé publique : faite pour être dans la page
   EMAIL_STOCKAGE: "mini-entreprise-3p-prof-email",                     // adresse du compte professeur, retenue sur cet ordinateur
-  AUTO_REFRESH_S: 20
+  AUTO_REFRESH_S: 20,
+  // Script de l'ancien Google Sheet (même adresse qu'avant) : il recopie la base dans ses onglets « 💾 »
+  GOOGLE_SHEET_URL: "https://script.google.com/macros/s/AKfycbwkApoh4ASdA7c9OOUMZTRjPFXZ-7jWGQ_VUsdJaVwIzYxLxoQw5dJjyjCcmHX_6KATGA/exec"
 };
 const STYLES = [["moderne","Moderne"],["elegant","Élégant"],["fun","Fun"],["street","Street"]];
 const POLICES = { moderne:"Outfit, Arial, sans-serif", elegant:"'Playfair Display', Georgia, serif", fun:"Fredoka, 'Comic Sans MS', sans-serif", street:"'Bebas Neue', Impact, sans-serif" };
@@ -1282,7 +1291,8 @@ const head = (kick, titre, lead) => `<div class="sec-head"><div class="kick"><sp
 // ======================================================================
 //  ÉTAT DE LA CONSOLE
 // ======================================================================
-const APP = { etape:0, exemple:"fictif", exAchat:0, vue:"pilotage", source:null, email:"", liste:[], brut:null, inscrits:[], config:null, maj:null, idx:0, cacherNums:false, auto:true, busy:false, err:"", action:false, duree:null };
+const APP = { etape:0, exemple:"fictif", exAchat:0, vue:"pilotage", source:null, email:"", liste:[], brut:null, inscrits:[], config:null, maj:null, idx:0, cacherNums:false, auto:true, busy:false, err:"", action:false, duree:null,
+  sauvegarde:null, sauvEnCours:false, jetonNouveau:"", sauvAutoTentee:"" };
 try { APP.email = localStorage.getItem(CONFIG.EMAIL_STOCKAGE) || ""; } catch(e) {}
 const VUES = [
   ["pilotage","⚙️","Pilotage de la classe"],
@@ -1719,10 +1729,11 @@ async function charger(silencieux){
   if (APP.busy) return;
   APP.busy = true; if (!silencieux) render();
   try {
-    const r = await rpcProf("me_prof_tableau");
-    APP.busy = false; APP.err = "";
+    const [r, s] = await Promise.all([rpcProf("me_prof_tableau"), rpcProf("me_prof_sauvegardes").catch(e => ({ ok:false, absent:!!e.absent, erreur:e.message || "" }))]);
+    APP.busy = false; APP.err = ""; APP.sauvegarde = s;
     try { localStorage.setItem(CLE_CACHE, JSON.stringify({ maj:Date.now(), dossiers:r.dossiers, config:r.config, inscrits:r.inscrits })); } catch(e) {}
     appliquerDonnees(r, new Date()); render();
+    verifierSauvegardeAuto();
   } catch(e) {
     APP.busy = false;
     if (e.absent){
@@ -1800,7 +1811,8 @@ document.addEventListener("click", (e) => {
     case "deco":
       if (APP.source === "live" && !confirm("Se déconnecter de la console sur cet ordinateur ?\n(La console de la JPO sera aussi déconnectée sur cet ordinateur : c'est le même compte.)")) return;
       if (APP.source === "live"){ try { localStorage.removeItem(CLE_CACHE); } catch(x) {} if (sb) sb.auth.signOut().catch(() => {}); }
-      APP.source = null; APP.liste = []; APP.brut = null; APP.inscrits = []; APP.config = null; APP.err = ""; clearInterval(minuterie); render(); break;
+      APP.source = null; APP.liste = []; APP.brut = null; APP.inscrits = []; APP.config = null; APP.err = ""; APP.sauvegarde = null; APP.jetonNouveau = "";
+      clearInterval(minuterie); render(); break;
   }
 });
 document.addEventListener("change", (e) => {
@@ -2448,9 +2460,103 @@ V.pilotage = () => {
         <div style="margin-top:10px"><button class="btn btn-main" data-pilot="ajouter">Ajouter à la liste</button></div></div>
       <div class="panel glass"><h3>Sauvegardes</h3>
         <p class="help" style="margin-bottom:12px">Une copie de tout le travail des élèves, à garder sur ton ordinateur ou dans ton Drive (conseillé une fois par mois et avant les vacances).</p>
-        <div style="display:flex;gap:10px;flex-wrap:wrap"><button class="btn btn-ghost" data-pilot="export">💾 Sauvegarde complète (fichier JSON)</button><button class="btn btn-ghost" data-pilot="csv">📊 Tableau des élèves (Excel)</button></div></div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap"><button class="btn btn-ghost" data-pilot="export">💾 Sauvegarde complète (fichier JSON)</button><button class="btn btn-ghost" data-pilot="csv">📊 Tableau des élèves (Excel)</button></div>
+        ${blocGoogleSheet()}</div>
     </div>`;
 };
+
+// ======================================================================
+//  COPIE DANS L'ANCIEN GOOGLE SHEET (script « SauvegardeSupabase » du Google Sheet)
+// ======================================================================
+const ORIGINES_SAUV = { console:"bouton de la console", "fin-de-seance":"fin de séance, automatique", menu:"menu du Google Sheet", soir:"sauvegarde du soir", installation:"installation" };
+/** Appel JSONP du script du Google Sheet (même méthode que l'ancienne console). */
+function appelGoogleSheet(params, timeout = 120000){
+  return new Promise((resolve, reject) => {
+    const cb = "cbGS" + Date.now() + Math.floor(Math.random() * 1e6), s = document.createElement("script");
+    let fini = false;
+    // Une réponse qui arrive en retard ne provoque pas d'erreur : la fonction reste définie (vide) un moment.
+    const fin = () => { fini = true; clearTimeout(t); s.remove(); window[cb] = function(){}; setTimeout(() => { try { delete window[cb]; } catch(e) {} }, 120000); };
+    const t = setTimeout(() => { if (!fini){ fin(); reject(new Error("timeout")); } }, timeout);
+    window[cb] = (d) => { if (fini) return; fin(); resolve(d); };
+    s.onerror = () => { if (!fini){ fin(); reject(new Error("reseau")); } };
+    s.src = CONFIG.GOOGLE_SHEET_URL + "?" + new URLSearchParams(Object.assign({}, params, { callback:cb, _:Date.now() })).toString();
+    document.body.appendChild(s);
+  });
+}
+const quandLisible = (iso) => { const d = new Date(iso); if (isNaN(d)) return "";
+  return (d.toDateString() === new Date().toDateString() ? "aujourd'hui" : d.toLocaleDateString("fr-BE", { weekday:"long", day:"numeric", month:"long" })) + " à " + heure(d); };
+/** Y a-t-il du travail (élèves, liste, réouvertures…) plus récent que la dernière copie réussie ? */
+function sauvegardeEnRetard(){
+  const s = APP.sauvegarde; if (!s || !s.ok || !s.derniereActivite) return false;
+  const r = s.derniereReussie, faite = r ? Date.parse((r.bilan && r.bilan.exporteLe) || r.le) : 0;
+  return Date.parse(s.derniereActivite) > faite;
+}
+function messageSauvegarde(r){
+  const e = r && r.erreur;
+  if (e === "action_inconnue" || e === "ancienne_adresse") return "le script du Google Sheet n'est pas encore mis à jour (guide, partie « Sauvegarde dans le Google Sheet »).";
+  if (e === "jeton_manquant") return "le jeton n'est pas encore collé dans le Google Sheet (menu 💾 Sauvegarde Supabase > 🔐 Coller le jeton).";
+  if (e === "jeton_invalide") return "le Google Sheet a encore l'ancien jeton : colle le nouveau (menu 💾 Sauvegarde Supabase > 🔐 Coller le jeton).";
+  if (e === "occupe") return "une autre copie est en cours : réessaie dans une minute.";
+  return (r && r.message) || "réponse inattendue du Google Sheet.";
+}
+async function chargerSauvegardes(){
+  if (APP.source !== "live") return;
+  try { APP.sauvegarde = await rpcProf("me_prof_sauvegardes"); }
+  catch(e) { APP.sauvegarde = { ok:false, absent:!!e.absent, erreur:e.message || "" }; }
+}
+/** Le script du Google Sheet lit la base (avec son jeton) et réécrit ses onglets « 💾 » : 10 à 30 secondes. */
+async function sauvegarderGoogleSheet(origine){
+  if (APP.source !== "live"){ noter("Connecte-toi pour copier ta classe dans le Google Sheet.", "ko"); return; }
+  if (APP.sauvEnCours) return;
+  APP.sauvEnCours = true; render();
+  let r = null, msg = "";
+  try { r = await appelGoogleSheet({ action:"sauvegardeSupabase", origine }); }
+  catch(e) { msg = e.message === "timeout" ? "le Google Sheet n'a pas répondu à temps (la copie continue peut-être : regarde dans une minute)." : "le Google Sheet est injoignable (connexion internet ?)."; }
+  APP.sauvEnCours = false;
+  if (r && r.ok){
+    APP.jetonNouveau = "";
+    const b = r.bilan || {};
+    noter(r.inchange ? "📤 Le Google Sheet était déjà à jour."
+      : `📤 Copie faite dans le Google Sheet${origine === "fin-de-seance" ? " (fin de séance)" : ""}${b.eleves != null ? ` : ${b.eleves} élèves, ${b.journal} lignes de journal` : ""}.`);
+  } else noter("⚠️ Copie dans le Google Sheet impossible : " + esc(msg || messageSauvegarde(r)), "ko");
+  await chargerSauvegardes(); render();
+}
+/** Après la séance (accès fermé) : copie automatique s'il y a du nouveau. Jamais pendant le jeu.
+ *  Seulement une fois l'installation finie (une première copie réussie) et quand tout est calme depuis 45 s. */
+function verifierSauvegardeAuto(){
+  const s = APP.sauvegarde;
+  if (APP.source !== "live" || !APP.config || APP.config.acces || APP.sauvEnCours || !s || !s.ok || !s.jeton || !s.derniereReussie || !CONFIG.GOOGLE_SHEET_URL) return;
+  if (!sauvegardeEnRetard() || APP.sauvAutoTentee === s.derniereActivite || Date.now() - Date.parse(s.derniereActivite) < 45000) return;
+  APP.sauvAutoTentee = s.derniereActivite;   // un seul essai automatique par changement (pas de boucle si le Google Sheet n'est pas prêt)
+  sauvegarderGoogleSheet("fin-de-seance");
+}
+function blocGoogleSheet(){
+  const s = APP.sauvegarde, live = APP.source === "live";
+  let etat, cls = "";
+  if (!live) etat = "Connecte-toi pour voir l'état de la copie.";
+  else if (!s) etat = "État de la copie : chargement…";
+  else if (s.absent){ etat = "Pas encore installée : colle d'abord le fichier SQL 3 dans Supabase, puis le script dans le Google Sheet (guide, partie « Sauvegarde dans le Google Sheet »)."; cls = "attente"; }
+  else if (!s.ok){ etat = "État de la copie indisponible : " + esc(s.erreur); cls = "ko"; }
+  else if (APP.sauvEnCours) etat = `<span class="spin"></span> Copie en cours dans le Google Sheet… (10 à 30 secondes)`;
+  else if (!s.jeton){ etat = "Étape 1 : crée le jeton de sauvegarde (bouton 🔐 ci-dessous), puis colle-le dans le Google Sheet."; cls = "attente"; }
+  else {
+    const r = s.derniereReussie, dern = (s.dernieres || [])[0];
+    etat = r ? `✅ Dernière copie : ${esc(quandLisible(r.le))} (${esc(ORIGINES_SAUV[r.origine] || r.origine)})${r.bilan && r.bilan.eleves != null ? ` · ${r.bilan.eleves} élèves, ${r.bilan.journal} lignes de journal` : ""}.`
+      : "Aucune copie pour l'instant : clique sur 📤.";
+    if (dern && !dern.ok){ etat += `<br>⚠️ Dernier essai raté (${esc(quandLisible(dern.le))}) : ${esc(dern.message)}`; cls = "ko"; }
+    else if (r && sauvegardeEnRetard()){ etat += "<br>⏳ Du nouveau n'est pas encore copié : la copie se fera toute seule quand l'accès sera fermé (ou clique sur 📤)."; cls = "attente"; }
+  }
+  return `<div class="gsheet"><h4>📤 Copie dans l'ancien Google Sheet</h4>
+    <div class="gs-etat ${cls}">${etat}</div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap">
+      <button class="btn btn-main" data-pilot="gsheet" ${!live || APP.sauvEnCours || !s || !s.ok || !s.jeton ? "disabled" : ""}>📤 Sauvegarder dans le Google Sheet</button>
+      <button class="btn btn-ghost" data-pilot="jeton" ${!live || !s || s.absent ? "disabled" : ""}>🔐 Jeton de sauvegarde (Google Sheet)</button></div>
+    ${APP.jetonNouveau ? `<div class="jeton"><b>Ton jeton de sauvegarde</b>. Copie-le maintenant : il ne sera plus affiché (si tu le perds, crée simplement un nouveau jeton).
+      <code id="jetonTxt">${esc(APP.jetonNouveau)}</code>
+      <button class="btn btn-ghost" data-pilot="copierJeton">📋 Copier le jeton</button>
+      <ol><li>Ouvre l'ancien Google Sheet de la mini-entreprise.</li><li>Menu <b>💾 Sauvegarde Supabase</b> → <b>🔐 Coller le jeton de sauvegarde…</b></li><li>Colle le jeton (Ctrl+V), puis OK : une première copie se fait.</li></ol></div>` : ""}
+  </div>`;
+}
 
 /** Action du professeur : appel à la base, message, puis rechargement des données. */
 async function actionProf(fn, message){
@@ -2539,6 +2645,23 @@ document.addEventListener("click", async (e) => {
       break;
     }
     case "csv": exporterCSV(); noter("📊 Tableau des élèves téléchargé (s'ouvre avec Excel)."); break;
+    case "gsheet": await sauvegarderGoogleSheet("console"); break;
+    case "jeton": {
+      if (APP.source !== "live"){ noter("Connecte-toi pour créer le jeton de sauvegarde.", "ko"); return; }
+      if (APP.sauvegarde && APP.sauvegarde.jeton && !confirm("Créer un nouveau jeton de sauvegarde ?\n\nL'ancien ne marchera plus : il faudra coller le nouveau dans le Google Sheet (menu 💾 Sauvegarde Supabase > 🔐 Coller le jeton).")) return;
+      try { const r = await rpcProf("me_prof_creer_jeton_sauvegarde"); APP.jetonNouveau = r.jeton; await chargerSauvegardes(); render(); noter("🔐 Jeton créé : copie-le, puis colle-le dans le Google Sheet."); }
+      catch(err) { noter("⚠️ " + esc(err.absent ? "La sauvegarde n'est pas encore installée dans la base : colle d'abord le fichier SQL 3 dans Supabase." : err.message), "ko"); }
+      break;
+    }
+    case "copierJeton": {
+      try { await navigator.clipboard.writeText(APP.jetonNouveau); noter("📋 Jeton copié : colle-le dans le Google Sheet (Ctrl+V)."); }
+      catch(err) {
+        const c = $("#jetonTxt"), sel = window.getSelection();
+        if (c && sel){ const rg = document.createRange(); rg.selectNodeContents(c); sel.removeAllRanges(); sel.addRange(rg); }
+        noter("Le jeton est sélectionné : appuie sur Ctrl+C pour le copier.", "ko");
+      }
+      break;
+    }
   }
 });
 
