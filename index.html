@@ -703,14 +703,15 @@ const euro = (n) => n.toLocaleString("fr-BE") + " €";
 //  LES BIENS À ACHETER ET LEURS FOURNISSEURS (identiques pour toute la classe)
 // ======================================================================
 const BIENS = [
-  { id:"mobilier", nom:"Le mobilier", court:"mobilier", icone:"🪑", pourquoi:"Pour accueillir tes clients et travailler confortablement : une table, des chaises et un comptoir.",
+  { id:"mobilier", nom:"Le mobilier", court:"mobilier", icone:"🪑", pourquoi:"Pour présenter tes produits, accueillir tes clients et les encaisser au comptoir.",
+    // article, détail et référence dépendent de l'activité : voir MOBILIER et fournPour()
     fournisseurs:[
       { code:"MBP", nom:"MeubloPrix", forme:"SRL", rue:"Route de Mons 154", cp:"7301", ville:"Hornu", tel:"065 71 22 40", web:"www.meubloprix.be", atout:"Prix bas",
-        article:"Ensemble mobilier en mélaminé blanc", detail:"1 table de travail, 4 chaises empilables, 1 comptoir d'accueil", ref:"ENS-MEL-01", qualite:"Simple et pratique", prix:690, remise:0, livraison:35, delai:10, garantie:1 },
-      { code:"BCO", nom:"Bureau & Co", forme:"SA", rue:"Avenue Wilson 410", cp:"7012", ville:"Jemappes", tel:"065 82 15 90", web:"www.bureauetco.be", atout:"Bon rapport qualité-prix",
-        article:"Ensemble mobilier en bois clair", detail:"1 table en hêtre, 4 chaises rembourrées, 1 comptoir avec rangements", ref:"ENS-BOIS-24", qualite:"Solide et chaleureux", prix:1180, remise:5, livraison:0, delai:5, garantie:2 },
+        article:"", detail:"", ref:"01", qualite:"Simple et pratique", prix:690, remise:0, livraison:35, delai:10, garantie:1 },
+      { code:"AGP", nom:"Agencement Pro", forme:"SA", rue:"Avenue Wilson 410", cp:"7012", ville:"Jemappes", tel:"065 82 15 90", web:"www.agencementpro.be", atout:"Bon rapport qualité-prix",
+        article:"", detail:"", ref:"24", qualite:"Solide et chaleureux", prix:1180, remise:5, livraison:0, delai:5, garantie:2 },
       { code:"DSG", nom:"Design Intérieur", forme:"SRL", rue:"Boulevard d'Avroy 77", cp:"4000", ville:"Liège", tel:"04 221 33 08", web:"www.design-interieur.be", atout:"Qualité premium",
-        article:"Ensemble mobilier design en chêne massif", detail:"1 table design, 4 chaises en cuir, 1 comptoir éclairé, montage compris", ref:"DSG-CHENE-PRO", qualite:"Haut de gamme, fait pour durer", prix:1890, remise:0, livraison:0, delai:3, garantie:3 } ] },
+        article:"", detail:"", ref:"PRO", qualite:"Haut de gamme, fait pour durer", prix:1890, remise:0, livraison:0, delai:3, garantie:3 } ] },
   { id:"caisse", nom:"La caisse enregistreuse", court:"caisse enregistreuse", icone:"🧾", pourquoi:"Pour encaisser tes clients, imprimer les tickets de caisse et garder une trace de chaque vente.",
     fournisseurs:[
       { code:"CPL", nom:"CaissePlus", forme:"SRL", rue:"Rue de la Station 12", cp:"7080", ville:"Frameries", tel:"065 67 40 11", web:"www.caisseplus.be", atout:"Prix bas",
@@ -728,6 +729,49 @@ const BIENS = [
       { code:"DGX", nom:"Digital Expert", forme:"SRL", rue:"Grand-Place 3", cp:"7500", ville:"Tournai", tel:"069 22 48 70", web:"www.digitalexpert.be", atout:"Qualité premium",
         article:"Ordinateur tout-en-un 27 pouces + imprimante", detail:"Grand écran, imprimante couleur, installation et formation d'une heure comprises", ref:"AIO-27-PRINT", qualite:"Très haut de gamme", prix:1490, remise:0, livraison:0, delai:3, garantie:3 } ] }
 ];
+/** Le mobilier dépend de l'activité (mêmes fournisseurs, mêmes prix pour toute la classe) : [article, détail] pour chaque niveau. */
+const MOBILIER = {
+  ferme:{ code:"FRM", pourquoi:"Pour présenter tes légumes, tes œufs et tes fromages, et encaisser tes clients au comptoir.",
+    offres:[["Étagères métalliques et étal pliant", "3 étagères métalliques, 1 étal pliant pour les légumes, 1 comptoir en mélaminé blanc"],
+      ["Étals en bois et comptoir en hêtre", "4 étals inclinés en bois pour les légumes, 1 présentoir à œufs, 1 comptoir en hêtre avec rangements"],
+      ["Agencement en chêne massif", "Étals en chêne massif, présentoir à œufs et à confitures, comptoir éclairé avec balance électronique, montage compris"]] },
+  pepiniere:{ code:"PEP", pourquoi:"Pour exposer tes plantes, les rempoter et encaisser tes clients au comptoir.",
+    offres:[["Tables d'exposition en métal", "4 tables métalliques pour les plantes en pot, 1 comptoir en mélaminé blanc"],
+      ["Gradins en bois et table de rempotage", "3 gradins en bois pour exposer les plantes, 1 table de rempotage, 1 comptoir en hêtre"],
+      ["Agencement de jardinerie en chêne", "Gradins et chariots d'exposition en chêne, table de rempotage en inox, comptoir éclairé, montage compris"]] },
+  chocolaterie:{ code:"CHO", pourquoi:"Pour travailler le chocolat, présenter tes pralines et encaisser tes clients au comptoir.",
+    offres:[["Table en inox et étagères simples", "1 table de travail en inox, 2 étagères murales, 1 comptoir en mélaminé blanc"],
+      ["Comptoir vitré et table en inox", "1 comptoir vitré pour les pralines, 1 table de travail en inox, 2 étagères en bois clair"],
+      ["Comptoir-vitrine éclairé et table en marbre", "1 comptoir-vitrine éclairé pour les pralines, 1 table en marbre pour travailler le chocolat, étagères en chêne massif, montage compris"]] },
+  textile:{ code:"TEX", pourquoi:"Pour imprimer tes vêtements, les présenter et encaisser tes clients au comptoir.",
+    offres:[["Table de travail et portants", "1 grande table de travail, 2 portants à vêtements, 1 comptoir en mélaminé blanc"],
+      ["Atelier en bois et cabine d'essayage", "1 table de découpe en hêtre, 3 portants, 1 cabine d'essayage, 1 comptoir en hêtre"],
+      ["Agencement de boutique design", "Table de travail éclairée, murs de présentation en chêne, cabine d'essayage avec grand miroir, comptoir design, montage compris"]] },
+  baskets:{ code:"BSK", pourquoi:"Pour présenter tes baskets, faire essayer tes clients et les encaisser au comptoir.",
+    offres:[["Étagères à chaussures et banc d'essayage", "4 étagères à chaussures en métal, 1 banc d'essayage, 1 comptoir en mélaminé blanc"],
+      ["Murs de présentation et poufs d'essayage", "2 murs de présentation en bois clair, 3 poufs d'essayage, 1 miroir, 1 comptoir en hêtre"],
+      ["Agencement de boutique design", "Murs lumineux pour les baskets, banc d'essayage en chêne, grand miroir, comptoir éclairé, montage compris"]] },
+  gaming:{ code:"GAM", pourquoi:"Pour présenter tes jeux et ton matériel, faire essayer tes clients et les encaisser au comptoir.",
+    offres:[["Étagères métalliques et comptoir", "4 étagères métalliques pour les jeux, 1 comptoir en mélaminé blanc, 1 tabouret"],
+      ["Présentoirs et coin démo", "3 présentoirs en bois, 1 meuble TV pour un coin démo, 1 comptoir en hêtre"],
+      ["Agencement gaming lumineux", "Présentoirs avec éclairage LED, coin démo avec 2 fauteuils, comptoir lumineux, montage compris"]] },
+  velos:{ code:"VEL", pourquoi:"Pour exposer tes vélos, réparer ceux de tes clients et encaisser au comptoir.",
+    offres:[["Râtelier et établi simples", "1 râtelier pour 8 vélos, 1 établi en métal, 1 comptoir en mélaminé blanc"],
+      ["Présentoirs muraux et établi de réparation", "2 présentoirs muraux à vélos, 1 établi avec pied de réparation, 1 comptoir en hêtre"],
+      ["Agencement de magasin et atelier complet", "Présentoirs muraux en chêne, établi professionnel avec pied de réparation et outils, comptoir éclairé, montage compris"]] },
+  animalerie:{ code:"ANI", pourquoi:"Pour ranger tes produits pour animaux, présenter tes aquariums et encaisser au comptoir.",
+    offres:[["Rayonnages métalliques et comptoir", "5 rayonnages métalliques, 1 comptoir en mélaminé blanc"],
+      ["Rayonnages en bois et meuble à aquariums", "4 rayonnages en bois, 1 meuble pour 3 aquariums, 1 comptoir en hêtre"],
+      ["Agencement complet en chêne", "Rayonnages en chêne éclairés, meuble à aquariums intégré, comptoir avec balance, montage compris"]] }
+};
+/** Le fournisseur k d'un bien, avec l'article adapté à l'activité de l'élève (pour le mobilier). */
+function fournPour(b, k, activite){
+  const f = b.fournisseurs[k];
+  if (b.id !== "mobilier") return f;
+  const m = MOBILIER[activite] || MOBILIER.baskets, o = m.offres[k];
+  return Object.assign({}, f, { article:o[0], detail:o[1], ref:`${f.code}-${m.code}-${f.ref}` });
+}
+
 const METHODES = [
   { id:"magasin", icone:"🚶", nom:"Aller dans les magasins", texte:"Tu vas voir les produits sur place, tu peux les toucher et poser tes questions au vendeur.",
     pro:"Tu vois et tu touches le produit", con:"Ça prend du temps et il faut se déplacer dans 3 magasins", duree:"environ 1 journée",
@@ -1618,7 +1662,7 @@ function docRecu(A){ const o = A.offres[A.choix];
 }
 function docDemande(E, A){
   return `<div class="mail"><div class="mh"><div><b>De :</b> ${esc(E.email2)}</div><div><b>À :</b> ${A.offres.map(o => esc(o.fNom)).join(", ")}</div><div><b>Objet :</b> Demande de prix – ${esc(A.bien.nom.toLowerCase())}</div></div>
-    <div class="mb"><p>Madame, Monsieur,</p><p>Notre entreprise <b>${esc(E.denomination || E.nom)}</b> souhaite acheter ${A.bien.id === "mobilier" ? "du mobilier (une table, des chaises et un comptoir)" : A.bien.id === "caisse" ? "une caisse enregistreuse" : "un ordinateur"}.</p>
+    <div class="mb"><p>Madame, Monsieur,</p><p>Notre entreprise <b>${esc(E.denomination || E.nom)}</b> souhaite acheter ${A.bien.id === "mobilier" ? "du mobilier pour son magasin (présentoirs, rangements et un comptoir)" : A.bien.id === "caisse" ? "une caisse enregistreuse" : "un ordinateur"}.</p>
       <p>Pourriez-vous nous envoyer votre <b>meilleure offre de prix</b> en précisant : le prix, les remises éventuelles, le délai et les frais de livraison, la garantie et les conditions de paiement ?</p>
       <p>Avec nos remerciements,<br>${esc(E.prenom)} ${esc(E.nomEleve)}</p></div></div>`;
 }
@@ -1837,52 +1881,88 @@ document.addEventListener("keydown", (e) => {
 document.addEventListener("fullscreenchange", () => { if (!document.fullscreenElement) document.body.classList.remove("projo"); });
 
 const M3_MARCH = {
-  ferme:{ client:{ nom:"Restaurant « Chez Mamy Lou »", contact:"Louise Delcroix", role:"cheffe et patronne", avatar:"👩‍🍳", rue:"Rue de Mons 45", cp:"7080", ville:"Frameries", pourquoi:"pour son nouveau menu de saison" },
+  ferme:{ tva:6,
+    pourquoiAchat:"Ta ferme ne produit pas tout : la coopérative te fournit ce que les autres producteurs de la région cultivent ou fabriquent, et tu le revends dans ton magasin.",
     fournisseur:{ code:"AGC", nom:"AgriCoop Hainaut", forme:"SC", rue:"Chaussée de Mons 210", cp:"7800", ville:"Ath", tel:"068 28 41 10", site:"pro.agricoop-hainaut.be", desc:"La coopérative des producteurs du Hainaut" },
-    articles:[ { ref:"AGC-POM10", nom:"Cageots de pommes de saison (10 kg)", unite:"cageot", detail:"Pommes de producteurs locaux, calibre moyen", qte:15, prixHT:7, prixVente:14 },
-               { ref:"AGC-PAN-SAI", nom:"Paniers de fruits et légumes de saison", unite:"panier", detail:"Environ 6 kg de fruits et légumes frais", qte:12, prixHT:14, prixVente:28 },
-               { ref:"AGC-GOURM", nom:"Paniers gourmands du terroir", unite:"panier", detail:"Fromages, confitures et jus de pomme artisanaux", qte:8, prixHT:27, prixVente:55 } ] },
-  pepiniere:{ client:{ nom:"Comité des fêtes de Jemappes", contact:"Karim Haddou", role:"président du comité", avatar:"🎪", rue:"Place de Jemappes 3", cp:"7012", ville:"Jemappes", pourquoi:"pour fleurir la place pendant la fête du village" },
+    articles:[
+      { ref:"AGC-POM10", nom:"Cageots de pommes Jonagold (10 kg)", unite:"cageot", detail:"Pommes de producteurs du Hainaut, calibre moyen", qte:15, prixHT:9.7,
+        client:{ nom:"École communale « Les Coquelicots »", contact:"Nathalie Roland", role:"directrice", avatar:"🏫", rue:"Rue des Écoles 4", cp:"7080", ville:"Frameries", pourquoi:"pour les collations fruitées des élèves pendant tout le mois" } },
+      { ref:"AGC-JUS6", nom:"Caisses de jus de pomme artisanal (6 × 1 litre)", unite:"caisse", detail:"Jus pressé à la ferme, sans sucre ajouté, bouteilles en verre", qte:12, prixHT:9.9,
+        client:{ nom:"Restaurant « Chez Mamy Lou »", contact:"Louise Delcroix", role:"cheffe et patronne", avatar:"👩‍🍳", rue:"Rue de Mons 45", cp:"7080", ville:"Frameries", pourquoi:"pour accompagner son nouveau menu du terroir" } },
+      { ref:"AGC-GOURM", nom:"Paniers gourmands du terroir", unite:"panier", detail:"Fromage affiné, confiture, jus de pomme et biscuits, panier en osier", qte:8, prixHT:26.4,
+        client:{ nom:"Bureau d'architectes « Lignes & Volumes »", contact:"Sophie Marchal", role:"gérante", avatar:"📐", rue:"Rue de Nimy 88", cp:"7000", ville:"Mons", pourquoi:"pour offrir un cadeau de fin d'année à ses meilleurs clients" } } ] },
+  pepiniere:{ tva:6,
+    pourquoiAchat:"Certaines plantes demandent des mois, voire des années de culture : tu les achètes déjà prêtes chez ton grossiste, puis tu les revends.",
     fournisseur:{ code:"HWA", nom:"Horti Wallonie", forme:"SRL", rue:"Rue des Horticulteurs 9", cp:"1300", ville:"Wavre", tel:"010 24 66 30", site:"pro.horti-wallonie.be", desc:"Le grossiste des jardineries de Wallonie" },
-    articles:[ { ref:"HWA-GER12", nom:"Géraniums en pot", unite:"pot", detail:"Pot de 12 cm, fleurs rouges ou roses", qte:40, prixHT:2, prixVente:4 },
-               { ref:"HWA-ROS3L", nom:"Rosiers en pot (3 litres)", unite:"pot", detail:"Rosiers buissons déjà fleuris", qte:20, prixHT:6.5, prixVente:14 },
-               { ref:"HWA-OLI120", nom:"Oliviers en pot décoratif (1,20 m)", unite:"pièce", detail:"Olivier taillé dans un pot en terre cuite", qte:4, prixHT:55, prixVente:120 } ] },
-  chocolaterie:{ client:{ nom:"Julie et Thomas, futurs mariés", contact:"Julie Moreau", role:"future mariée", avatar:"💒", rue:"Rue des Roses 12", cp:"7340", ville:"Colfontaine", pourquoi:"pour offrir un cadeau à chaque invité de leur mariage" },
+    articles:[
+      { ref:"HWA-GER12", nom:"Géraniums en pot (12 cm)", unite:"pot", detail:"Fleurs rouges ou roses, prêts à planter", qte:40, prixHT:2,
+        client:{ nom:"Comité des fêtes de Jemappes", contact:"Karim Haddou", role:"président du comité", avatar:"🎪", rue:"Place de Jemappes 3", cp:"7012", ville:"Jemappes", pourquoi:"pour fleurir la place pendant la fête du village" } },
+      { ref:"HWA-ROS3L", nom:"Rosiers buissons en pot (3 litres)", unite:"pot", detail:"Rosiers déjà fleuris, variétés parfumées", qte:20, prixHT:7.1,
+        client:{ nom:"Maison de repos « Les Glycines »", contact:"Martine Dubois", role:"directrice", avatar:"🏡", rue:"Avenue des Tilleuls 21", cp:"7340", ville:"Colfontaine", pourquoi:"pour aménager le jardin des résidents" } },
+      { ref:"HWA-OLI120", nom:"Oliviers en pot décoratif (1,20 m)", unite:"pièce", detail:"Olivier taillé, grand pot en terre cuite", qte:4, prixHT:66,
+        client:{ nom:"Hôtel « Le Grand Parc »", contact:"Olivier Lemaire", role:"directeur", avatar:"🏨", rue:"Boulevard Dolez 12", cp:"7000", ville:"Mons", pourquoi:"pour décorer la terrasse de l'hôtel" } } ] },
+  chocolaterie:{ tva:6,
+    pourquoiAchat:"Tes pralines, tu les fabriques toi-même. Mais certaines douceurs demandent des machines spéciales (comme la turbine à dragées) : tu les achètes chez ton grossiste, puis tu les revends.",
     fournisseur:{ code:"DCO", nom:"Douceurs & Co", forme:"SRL", rue:"Rue des Confiseurs 12", cp:"4000", ville:"Liège", tel:"04 223 18 50", site:"pro.douceurs-co.be", desc:"Le grossiste des chocolatiers et pâtissiers" },
-    articles:[ { ref:"DCO-SACH200", nom:"Sachets de chocolats assortis (200 g)", unite:"sachet", detail:"Chocolats au lait et noirs, sachet transparent", qte:30, prixHT:2.5, prixVente:5 },
-               { ref:"DCO-BAL250", nom:"Ballotins de pralines (250 g)", unite:"ballotin", detail:"Pralines belges assorties, ruban doré", qte:25, prixHT:5.8, prixVente:12 },
-               { ref:"DCO-PREST500", nom:"Coffrets prestige de pralines (500 g)", unite:"coffret", detail:"Grandes pralines fines dans un coffret en bois", qte:12, prixHT:15, prixVente:32 } ] },
-  textile:{ client:{ nom:"Club de foot des Étoiles de Frameries", contact:"Marco Rossi", role:"président du club", avatar:"⚽", rue:"Rue du Stade 1", cp:"7080", ville:"Frameries", pourquoi:"pour les nouvelles tenues des supporters" },
-    fournisseur:{ code:"TXD", nom:"Textiles Delcourt", forme:"SRL", rue:"Rue du Midi 77", cp:"7700", ville:"Mouscron", tel:"056 33 70 12", site:"pro.textiles-delcourt.be", desc:"Le grossiste en vêtements, imprimés ou brodés à la demande" },
-    articles:[ { ref:"TXD-TS-IMP", nom:"T-shirts imprimés au logo du club", unite:"pièce", detail:"Coton, logo imprimé devant, tailles S à XL", qte:30, prixHT:3.5, prixVente:8 },
-               { ref:"TXD-SW-BRO", nom:"Sweats à capuche brodés", unite:"pièce", detail:"Molleton épais, logo brodé sur le cœur", qte:15, prixHT:13, prixVente:28 },
-               { ref:"TXD-SOFT-BRO", nom:"Vestes softshell brodées", unite:"pièce", detail:"Coupe-vent et déperlantes, logo brodé", qte:8, prixHT:31, prixVente:65 } ] },
-  baskets:{ client:{ nom:"École de danse « Hip-Hop Factory »", contact:"Inès Dubois", role:"professeure de danse", avatar:"💃", rue:"Rue de Nimy 120", cp:"7000", ville:"Mons", pourquoi:"pour le spectacle de fin d'année de ses élèves" },
+    articles:[
+      { ref:"DCO-STNIC", nom:"Sachets de friandises de Saint-Nicolas (150 g)", unite:"sachet", detail:"Speculoos, massepain et chocolats, sachet transparent avec ruban", qte:30, prixHT:1.95,
+        client:{ nom:"École maternelle « Les Petits Loups »", contact:"Fatima El Amrani", role:"institutrice", avatar:"🧸", rue:"Rue de l'Église 10", cp:"7390", ville:"Quaregnon", pourquoi:"pour la visite de saint Nicolas : un sachet pour chaque enfant" } },
+      { ref:"DCO-DRAG100", nom:"Boîtes de dragées aux amandes (100 g)", unite:"boîte", detail:"Dragées blanches et argentées, boîte transparente et ruban", qte:40, prixHT:3.55,
+        client:{ nom:"Julie et Thomas, futurs mariés", contact:"Julie Moreau", role:"future mariée", avatar:"💒", rue:"Rue des Roses 12", cp:"7340", ville:"Colfontaine", pourquoi:"pour offrir des dragées à chaque invité de leur mariage" } },
+      { ref:"DCO-AVOLA", nom:"Coffrets de dragées d'Avola (250 g)", unite:"coffret", detail:"Amandes d'Avola (Sicile), coffret en porcelaine", qte:12, prixHT:14.5,
+        client:{ nom:"Agence immobilière « Prestige Immo »", contact:"Marc Lefebvre", role:"directeur", avatar:"🏛️", rue:"Grand-Place 18", cp:"7000", ville:"Mons", pourquoi:"pour remercier ses meilleurs clients en fin d'année" } } ] },
+  textile:{ tva:21,
+    pourquoiAchat:"Ton atelier imprime. Mais la broderie et le tricot demandent des machines que tu n'as pas : tu fais appel à ton grossiste, puis tu revends.",
+    fournisseur:{ code:"TXD", nom:"Textiles Delcourt", forme:"SRL", rue:"Rue du Midi 77", cp:"7700", ville:"Mouscron", tel:"056 33 70 12", site:"pro.textiles-delcourt.be", desc:"Le grossiste en vêtements, brodés ou tricotés à la demande" },
+    articles:[
+      { ref:"TXD-ECH-TRI", nom:"Écharpes de supporter tricotées aux couleurs du club", unite:"pièce", detail:"Tricot jacquard de 140 cm, nom du club tissé", qte:30, prixHT:4.5,
+        client:{ nom:"Club de foot des Étoiles de Frameries", contact:"Marco Rossi", role:"président du club", avatar:"⚽", rue:"Rue du Stade 1", cp:"7080", ville:"Frameries", pourquoi:"pour ses supporters, à la grande fête du club" } },
+      { ref:"TXD-SW-BRO", nom:"Sweats à capuche brodés au logo de l'entreprise", unite:"pièce", detail:"Molleton épais, logo brodé sur le cœur", qte:15, prixHT:13.4,
+        client:{ nom:"Entreprise de nettoyage « Net & Clair »", contact:"Sandra Pirlot", role:"gérante", avatar:"🧽", rue:"Rue de l'Industrie 7", cp:"7300", ville:"Boussu", pourquoi:"pour habiller ses employés aux couleurs de l'entreprise" } },
+      { ref:"TXD-VCUI-BRO", nom:"Vestes de cuisine brodées (coton premium)", unite:"pièce", detail:"Coton épais, boutons-pressions, nom du restaurant brodé", qte:8, prixHT:33,
+        client:{ nom:"Restaurant gastronomique « L'Écrin »", contact:"Antoine Vervaeke", role:"chef", avatar:"🍽️", rue:"Rue d'Havré 31", cp:"7000", ville:"Mons", pourquoi:"pour les vestes de sa brigade de cuisine" } } ] },
+  baskets:{ tva:21, pourquoiAchat:"",
     fournisseur:{ code:"SPD", nom:"Sport Distribution", forme:"SA", rue:"Boulevard Industriel 60", cp:"1070", ville:"Anderlecht", tel:"02 520 44 80", site:"pro.sport-distribution.be", desc:"Le grossiste en articles de sport" },
-    articles:[ { ref:"SPD-TOILE-B", nom:"Baskets en toile blanches", unite:"paire", detail:"Toile légère, semelle en caoutchouc", qte:12, prixHT:12.5, prixVente:25 },
-               { ref:"SPD-CONF-T", nom:"Baskets confortables tendance", unite:"paire", detail:"Semelle amortissante, plusieurs coloris", qte:10, prixHT:31, prixVente:65 },
-               { ref:"SPD-CUIR-HG", nom:"Baskets en cuir haut de gamme", unite:"paire", detail:"Cuir véritable, finitions soignées", qte:6, prixHT:66, prixVente:140 } ] },
-  gaming:{ client:{ nom:"Maison de jeunes « Le Spot »", contact:"Kevin Lambert", role:"animateur", avatar:"🕹️", rue:"Rue de la Station 30", cp:"7300", ville:"Boussu", pourquoi:"pour équiper sa nouvelle salle de jeux" },
+    articles:[
+      { ref:"SPD-TOILE-B", nom:"Baskets en toile blanches", unite:"paire", detail:"Toile légère, semelle en caoutchouc", qte:12, prixHT:20.4,
+        client:{ nom:"École de danse « Hip-Hop Factory »", contact:"Inès Dubois", role:"professeure de danse", avatar:"💃", rue:"Rue de Nimy 120", cp:"7000", ville:"Mons", pourquoi:"pour le spectacle de fin d'année de ses élèves" } },
+      { ref:"SPD-VILLE-N", nom:"Baskets de ville confortables (noires)", unite:"paire", detail:"Semelle amortissante et antidérapante, noir uni", qte:10, prixHT:40.5,
+        client:{ nom:"Brasserie « Le Bistrot du Coin »", contact:"David Leroy", role:"patron", avatar:"🍺", rue:"Grand-Rue 54", cp:"7330", ville:"Saint-Ghislain", pourquoi:"pour que ses serveurs soient bien chaussés toute la journée" } },
+      { ref:"SPD-BASK-PRO", nom:"Chaussures de basket montantes pro", unite:"paire", detail:"Amorti renforcé, maintien de la cheville, cuir et mesh", qte:10, prixHT:69.5,
+        client:{ nom:"Royal Basket Club de Mons", contact:"Yannick Dupont", role:"entraîneur", avatar:"🏀", rue:"Avenue du Tir 10", cp:"7000", ville:"Mons", pourquoi:"pour l'équipe première, avant le début du championnat" } } ] },
+  gaming:{ tva:21, pourquoiAchat:"",
     fournisseur:{ code:"TCD", nom:"TechDistri", forme:"SA", rue:"Leuvensesteenweg 510", cp:"1930", ville:"Zaventem", tel:"02 725 60 90", site:"pro.techdistri.be", desc:"Le grossiste en électronique et jeux vidéo" },
-    articles:[ { ref:"TCD-MAN-WL", nom:"Manettes sans fil compatibles", unite:"pièce", detail:"Batterie rechargeable, câble fourni", qte:10, prixHT:15, prixVente:29 },
-               { ref:"TCD-CASQ-MIC", nom:"Casques gaming avec micro", unite:"pièce", detail:"Son surround, micro réglable", qte:8, prixHT:29, prixVente:59 },
-               { ref:"TCD-FAUT-PRE", nom:"Fauteuils gaming premium", unite:"pièce", detail:"Dossier inclinable, coussins lombaires", qte:4, prixHT:115, prixVente:249 } ] },
-  velos:{ client:{ nom:"Auberge de jeunesse de Mons", contact:"Sarah Janssens", role:"gérante", avatar:"🏨", rue:"Rampe du Château 2", cp:"7000", ville:"Mons", pourquoi:"pour prêter du matériel aux visiteurs qui découvrent la région" },
+    articles:[
+      { ref:"TCD-MAN-WL", nom:"Manettes sans fil compatibles", unite:"pièce", detail:"Batterie rechargeable, câble USB-C fourni", qte:10, prixHT:16.5,
+        client:{ nom:"Maison de jeunes « Le Spot »", contact:"Kevin Lambert", role:"animateur", avatar:"🕹️", rue:"Rue de la Station 30", cp:"7300", ville:"Boussu", pourquoi:"pour équiper sa nouvelle salle de jeux" } },
+      { ref:"TCD-CASQ-MIC", nom:"Casques gaming avec micro", unite:"pièce", detail:"Son surround, micro antibruit réglable", qte:8, prixHT:33,
+        client:{ nom:"Club e-sport « Borinage Gaming »", contact:"Lucas Martin", role:"président du club", avatar:"🏆", rue:"Rue de la Gare 15", cp:"7330", ville:"Saint-Ghislain", pourquoi:"pour ses joueurs, avant le prochain tournoi en ligne" } },
+      { ref:"TCD-FAUT-PRE", nom:"Fauteuils gaming premium", unite:"pièce", detail:"Dossier inclinable, coussins lombaires, accoudoirs réglables", qte:4, prixHT:115.5,
+        client:{ nom:"Studio de streaming « Live Box »", contact:"Chloé Vandamme", role:"gérante", avatar:"🎥", rue:"Rue des Arbalestriers 9", cp:"7000", ville:"Mons", pourquoi:"pour aménager ses studios de diffusion" } } ] },
+  velos:{ tva:21, pourquoiAchat:"",
     fournisseur:{ code:"CBX", nom:"Cycles Benelux", forme:"SA", rue:"Kempische Steenweg 300", cp:"3500", ville:"Hasselt", tel:"011 22 85 40", site:"pro.cycles-benelux.be", desc:"Le grossiste en vélos et accessoires" },
-    articles:[ { ref:"CBX-CASQ-U", nom:"Casques de vélo", unite:"pièce", detail:"Taille réglable, éclairage arrière intégré", qte:12, prixHT:10, prixVente:22 },
-               { ref:"CBX-VILLE-EQ", nom:"Vélos de ville équipés", unite:"pièce", detail:"Panier, éclairage et antivol fournis", qte:4, prixHT:215, prixVente:399 },
-               { ref:"CBX-ELEC-HG", nom:"Vélos électriques haut de gamme", unite:"pièce", detail:"Autonomie 100 km, cadre aluminium", qte:2, prixHT:740, prixVente:1490 } ] },
-  animalerie:{ client:{ nom:"Refuge « Les Amis des Bêtes »", contact:"Claire Lefèvre", role:"responsable des bénévoles", avatar:"🐾", rue:"Chemin des Prés 8", cp:"7370", ville:"Dour", pourquoi:"pour accueillir les nouveaux pensionnaires du refuge" },
+    articles:[
+      { ref:"CBX-CASQ-U", nom:"Casques de vélo", unite:"pièce", detail:"Taille réglable, éclairage arrière intégré", qte:12, prixHT:11.7,
+        client:{ nom:"Auberge de jeunesse de Mons", contact:"Sarah Janssens", role:"gérante", avatar:"🏨", rue:"Rampe du Château 2", cp:"7000", ville:"Mons", pourquoi:"pour prêter des casques aux visiteurs qui louent un vélo" } },
+      { ref:"CBX-VILLE-EQ", nom:"Vélos de ville équipés", unite:"pièce", detail:"Cadre aluminium, 7 vitesses, panier, éclairage et antivol", qte:4, prixHT:247.5,
+        client:{ nom:"Administration communale de Boussu", contact:"Pierre Gilson", role:"échevin de la mobilité", avatar:"🏛️", rue:"Rue Grande 1", cp:"7300", ville:"Boussu", pourquoi:"pour les déplacements des agents communaux en ville" } },
+      { ref:"CBX-ELEC-HG", nom:"Vélo électrique haut de gamme", unite:"pièce", detail:"Moteur central, autonomie 120 km, cadre aluminium, freins hydrauliques", qte:1, prixHT:1235.5,
+        client:{ nom:"Étude du notaire Rousseau", contact:"Hélène Rousseau", role:"notaire", avatar:"⚖️", rue:"Rue de la Chaussée 40", cp:"7000", ville:"Mons", pourquoi:"pour se rendre à ses rendez-vous en ville sans voiture" } } ] },
+  animalerie:{ tva:21, pourquoiAchat:"",
     fournisseur:{ code:"ADI", nom:"Animal Distribution", forme:"SA", rue:"Avenue de l'Industrie 40", cp:"6040", ville:"Jumet", tel:"071 35 20 64", site:"pro.animal-distribution.be", desc:"Le grossiste en produits pour animaux" },
-    articles:[ { ref:"ADI-CROQ4", nom:"Sacs de croquettes pour chiens (4 kg)", unite:"sac", detail:"Croquettes complètes pour chiens adultes", qte:20, prixHT:6.5, prixVente:13 },
-               { ref:"ADI-PAN-LAV", nom:"Paniers pour chiens lavables", unite:"pièce", detail:"Coussin amovible, taille moyenne", qte:10, prixHT:18, prixVente:37 },
-               { ref:"ADI-ARBRE-D", nom:"Arbres à chat design", unite:"pièce", detail:"Bois clair, griffoirs et niche", qte:5, prixHT:58, prixVente:119 } ] }
+    articles:[
+      { ref:"ADI-CROQ4", nom:"Sacs de croquettes pour chiens (4 kg)", unite:"sac", detail:"Croquettes complètes pour chiens adultes", qte:20, prixHT:7.1,
+        client:{ nom:"Refuge « Les Amis des Bêtes »", contact:"Claire Lefèvre", role:"responsable des bénévoles", avatar:"🐾", rue:"Chemin des Prés 8", cp:"7370", ville:"Dour", pourquoi:"pour nourrir les chiens du refuge ce mois-ci" } },
+      { ref:"ADI-PAN-LAV", nom:"Paniers pour chiens lavables", unite:"pièce", detail:"Coussin déhoussable, taille moyenne", qte:10, prixHT:18.7,
+        client:{ nom:"Pension canine « Le Bois Joli »", contact:"Nicolas Hubert", role:"gérant", avatar:"🐕", rue:"Chemin du Bois 3", cp:"7390", ville:"Quaregnon", pourquoi:"pour les box de ses pensionnaires" } },
+      { ref:"ADI-ARBRE-D", nom:"Arbres à chat design", unite:"pièce", detail:"Bois clair, griffoirs en sisal, niche et hamac", qte:5, prixHT:57.5,
+        client:{ nom:"Bar à chats « Le Chat Pitre »", contact:"Emma Delvaux", role:"gérante", avatar:"🐈", rue:"Rue de la Coupe 22", cp:"7000", ville:"Mons", pourquoi:"pour aménager sa nouvelle salle" } } ] }
 };
 
 // ======================================================================
 //  MISSIONS 2 ET 3 : DONNÉES (réelles, démonstration ou exemple fictif)
 // ======================================================================
-const M3_COND = { remisePct:5, remiseDes:10, port:15, francoDes:250, tva:21 };
+const M3_COND = { remisePct:5, remiseDes:10, port:15, francoDes:250, delai:3 };   // TVA : celle de l'activité (M3_MARCH[…].tva)
 const M3_MARGES = [
   { id:"petit", nom:"Petite marge", pct:20, strat:"Petits prix", icone:"💰", c:"#a3e635" },
   { id:"milieu", nom:"Marge moyenne", pct:50, strat:"Bon rapport qualité-prix", icone:"⚖️", c:"#38bdf8" },
@@ -1897,7 +1977,7 @@ function m2Synth(E, choixParBien){
   const date = "5 octobre 2026", dates = ["9 octobre 2026","10 octobre 2026","12 octobre 2026"];
   const achats = ["ordinateur","caisse","mobilier"].map((id, k) => {
     const b = BIENS.find(x => x.id === id), ch = choixParBien[id];
-    const offres = b.fournisseurs.map((f, j) => { const remise = Math.round(f.prix * f.remise) / 100;
+    const offres = b.fournisseurs.map((_, j) => { const f = fournPour(b, j, E.typeId), remise = Math.round(f.prix * f.remise) / 100;
       return { numero:`OP-${f.code}-${3100 + k * 7 + j}`, fournisseur:{ nom:f.nom, forme:f.forme, adresse:`${f.rue}, ${f.cp} ${f.ville}`, numeroTVA:"BE " + bceDe(40000000 + j * 1234567 + k * 77),
         telephone:f.tel, site:f.web, atout:f.atout }, reference:f.ref, article:f.article, detail:f.detail, niveau:["petit","milieu","haut"][j], prix:f.prix, remisePourcent:f.remise, remise,
         fraisLivraison:f.livraison, totalAPayer:r2c(f.prix - remise + f.livraison), delaiJours:f.delai, garantieAns:f.garantie, paiement:"à la livraison" }; });
@@ -1915,17 +1995,18 @@ function m2Synth(E, choixParBien){
 }
 /** Mission 3 calculée exactement comme dans l'application élève. */
 function m3Synth(E, m2){
-  const m = M3_MARCH[E.typeId], i = iStratE(E), art = m.articles[i], q = art.qte, mg = M3_MARGES[i];
+  const m = M3_MARCH[E.typeId], i = iStratE(E), art = m.articles[i], q = art.qte, mg = M3_MARGES[i], cl = art.client;
   const brut = r2c(q * art.prixHT), remise = q >= M3_COND.remiseDes ? r2c(brut * M3_COND.remisePct / 100) : 0, net = r2c(brut - remise);
-  const port = net >= M3_COND.francoDes ? 0 : M3_COND.port, taxable = r2c(net + port), tva = r2c(taxable * M3_COND.tva / 100), total = r2c(taxable + tva);
-  const cu = r2c(total / q), pv = r2c(cu * (1 + mg.pct / 100)), vente = r2c(q * pv), ben = r2c(vente - total);
+  const port = net >= M3_COND.francoDes ? 0 : M3_COND.port, taxable = r2c(net + port), tva = r2c(taxable * (m.tva || 21) / 100), total = r2c(taxable + tva);
+  // comme dans l'application élève : coût d'un article + marge, puis arrondi à l'euro supérieur
+  const cu = r2c(total / q), pc = r2c(cu * (1 + mg.pct / 100)), pv = Math.ceil(pc - 1e-9), vente = r2c(q * pv), ben = r2c(vente - total);
   const avant = m2.patrimoine, banque = r2c(avant.argentEnBanque - total + vente);
   return { statut:"termine",
-    commandeClient:{ client:{ nom:m.client.nom, contact:m.client.contact, role:m.client.role, adresse:`${m.client.rue}, ${m.client.cp} ${m.client.ville}`, raison:m.client.pourquoi, avatar:m.client.avatar },
+    commandeClient:{ client:{ nom:cl.nom, contact:cl.contact, role:cl.role, adresse:`${cl.rue}, ${cl.cp} ${cl.ville}`, raison:cl.pourquoi, avatar:cl.avatar },
       reference:art.ref, article:art.nom, quantite:q, prixUnitaire:pv, montant:vente },
     achatMarchandises:{ fournisseur:{ nom:m.fournisseur.nom, forme:m.fournisseur.forme, adresse:`${m.fournisseur.rue}, ${m.fournisseur.cp} ${m.fournisseur.ville}`, site:m.fournisseur.site },
-      reference:art.ref, article:art.nom, quantite:q, prixUnitaireHTVA:art.prixHT, brutHTVA:brut, remise, fraisDePortHTVA:port, montantHTVA:taxable, tva, totalTVAC:total },
-    prixDeVente:{ strategie:E.strategie, marge:mg.nom, margePourcent:mg.pct, prixAchatUnitaire:cu, margeUnitaire:r2c(pv - cu), prixVenteUnitaire:pv, quantite:q, montantVente:vente },
+      reference:art.ref, article:art.nom, quantite:q, prixUnitaireHTVA:art.prixHT, brutHTVA:brut, remise, fraisDePortHTVA:port, montantHTVA:taxable, tauxTVA:m.tva || 21, tva, totalTVAC:total },
+    prixDeVente:{ strategie:E.strategie, marge:mg.nom, margePourcent:mg.pct, prixAchatUnitaire:cu, prixCalcule:pc, arrondi:"à l'euro supérieur", margeUnitaire:r2c(pv - cu), prixVenteUnitaire:pv, quantite:q, montantVente:vente },
     resultat:{ depenses:[{ libelle:"Achat des marchandises", montant:total }], ventes:[{ libelle:"Vente au client", montant:vente }], benefice:ben },
     patrimoine:{ possede:avant.possede.slice(0, -1).concat([{ libelle:"Argent en banque", montant:banque }]),
       origine:avant.origine.concat([{ libelle:"Bénéfice de la première vente", montant:ben }]), valeur:r2c(avant.valeur + ben), argentEnBanque:banque },
